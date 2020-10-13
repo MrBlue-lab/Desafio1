@@ -9,18 +9,19 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- CSS only -->
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <title>Loguin</title>
     </head>
     <body>
-        <form name="for" action="controlador.jsp" method="POST">
-            <fieldset>
-                <legend><h1>Loguin</h1></legend>
-                <p>Nombre <input type="text" name="usuario" placeholder="usuario">
-                <p>Contraseña <input type="password" name="contrasena" placeholder="contraseña"></p>
-                <p><a href="recuperar.jsp">recuperar contraseña</a></p>
-                <input type="submit" name="loguin" value="Loguin">
-                <input type="submit" name="registrar" value="Registrar">
-            </fieldset>
-        </form>
+<jsp:include page="presentacion/header.jsp" />
+
+
+
+
     </body>
 </html>
