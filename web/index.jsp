@@ -12,16 +12,24 @@
         <!-- CSS only -->
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <jsp:include page="presentacion/elementos.jsp" />
         <title>Loguin</title>
     </head>
     <body>
-<jsp:include page="presentacion/header.jsp" />
-
-
-
-
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">DOOM Crossing</a>
+                </div>
+            </div>
+        </nav>
+        <h1><span class="glyphicon glyphicon-user"> </span></h1>
+        <form name="for" action="Controladores_comun/controlador.jsp" method="POST">
+            <p>Nombre <input type="text" name="usuario" placeholder="usuario">
+            <p>Contraseña <input type="password" name="contrasena" placeholder="contraseña"></p>
+            <p><a href="recuperar.jsp">recuperar contraseña</a></p>
+            <input type="submit" name="loguin" value="Loguin">
+            <input type="submit" name="registrar" value="Registrar">
+        </form>
     </body>
 </html>

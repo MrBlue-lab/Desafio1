@@ -11,7 +11,7 @@
     //metodo para regresar en cualquier pagina
     if (request.getParameter("back") != null) {
         session.removeAttribute("logueado");
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("../index.jsp");
     }
 
     //Redireccionamiento de paginas
@@ -32,10 +32,10 @@
         int edad = Integer.parseInt(aux);
         aux = request.getParameter("tipo");
         int tipo = Integer.parseInt(aux);
-        String asig[] = request.getParameterValues("asig");
+        String asig[] = request.getParameterValues("asig");/**
         User u = new User(tipo, email, nombre, apellido, pass, edad, curso, sexo, fecha, asig);
         ConexionEstatica.nueva();
-        ConexionEstatica.Insertar_User(u);
+        ConexionEstatica.Insertar_User(u);**/
         ConexionEstatica.cerrarBD();
         response.sendRedirect("index.jsp");
     }
@@ -47,9 +47,9 @@
         ConexionEstatica.nueva();
         if (ConexionEstatica.loguin(user, pass) != null) {
             session.setAttribute("logueado", ConexionEstatica.loguin(user, pass));
-            response.sendRedirect("eleccion.jsp");
+            response.sendRedirect("../vistas_comun/eleccion.jsp");
         } else {
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("../index.jsp");
         }
         ConexionEstatica.cerrarBD();
     }
@@ -60,7 +60,7 @@
         if (Integer.parseInt(aux) == 1) {
             response.sendRedirect("crud.jsp");
         } else {
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("../vistas_user/home.jsp");
         }
     }
 %>

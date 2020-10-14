@@ -10,39 +10,29 @@ package Modelo;
  * @author daw205
  */
 public class User {
-    private int tipo;
+
+    private final int id;
     private final String email;
+    private String pass;
     private String nombre;
     private String apellidos;
-    private String pass;
     private int edad;
-    private String curso;
     private String sexo;
-    private String fecha;
-    private String [] asig;
+    private int rol;
+    private int validado;
 
-    public User(int tipo, String email, String nombre, String apellidos, String pass, int edad, String curso, String sexo, String fecha) {
-        this.tipo = tipo;
+    public User(int id, String email, String pass) {
+        this.id = id;
         this.email = email;
-        this.nombre = nombre;
-        this.apellidos = apellidos;
         this.pass = pass;
-        this.edad = edad;
-        this.curso = curso;
-        this.sexo = sexo;
-        this.fecha = fecha;
     }
-    public User(int tipo, String email, String nombre, String apellidos, String pass, int edad, String curso, String sexo, String fecha, String[] asig) {
-        this.tipo = tipo;
+
+    public User(int id, String email, String pass, int rol, int validado) {
+        this.id = id;
         this.email = email;
-        this.nombre = nombre;
-        this.apellidos = apellidos;
         this.pass = pass;
-        this.edad = edad;
-        this.curso = curso;
-        this.sexo = sexo;
-        this.fecha = fecha;
-        this.asig = asig;
+        this.rol = rol;
+        this.validado = validado;
     }
 
     public String getPass() {
@@ -51,18 +41,6 @@ public class User {
 
     public void setPass(String pass) {
         this.pass = pass;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public int getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
     }
 
     public String getNombre() {
@@ -89,14 +67,6 @@ public class User {
         this.edad = edad;
     }
 
-    public String getCurso() {
-        return curso;
-    }
-
-    public void setCurso(String curso) {
-        this.curso = curso;
-    }
-
     public String getSexo() {
         return sexo;
     }
@@ -105,29 +75,20 @@ public class User {
         this.sexo = sexo;
     }
 
-    public String getFecha() {
-        return fecha;
+    public int getRol() {
+        return rol;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setRol(int rol) {
+        this.rol = rol;
     }
 
-    public String[] getAsig() {
-        return asig;
+    public int isValidado() {
+        return validado;
     }
 
-    public void setAsig(String[] asig) {
-        this.asig = asig;
+    public void setValidado(int validado) {
+        this.validado = validado;
     }
 
-    @Override
-    public String toString() {
-        String aux=new String();
-        for (int i = 0; i < asig.length; i++) {
-            aux=aux+asig[i]+" ";
-        }
-        return "Persona{" + "nombre=" + nombre + ", apellidos=" + apellidos + ", edad=" + edad + ", curso=" + curso + ", sexo=" + sexo + ", fecha_creacion=" + fecha + ", asig=" + aux  + '}';
-    }
-    
 }

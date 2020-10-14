@@ -53,11 +53,11 @@ public class ConexionEstatica {
     public static User loguin(String email, String pass) {
         User existe = null;
         try {
-            String sentencia = "SELECT * FROM usuarios WHERE email = '" + email + "' && pass = '" + pass + "'";
+            String sentencia = "SELECT * FROM user WHERE email = '" + email + "' && pass = '" + pass + "'";
             ConexionEstatica.Conj_Registros = ConexionEstatica.Sentencia_SQL.executeQuery(sentencia);
             if (ConexionEstatica.Conj_Registros.next())//Si devuelve true es que existe.
             {
-                existe = new User(Conj_Registros.getInt("tipo"), Conj_Registros.getString("email"), Conj_Registros.getString("nombre"), Conj_Registros.getString("apellidos"), Conj_Registros.getString("pass"), Conj_Registros.getInt("edad"), Conj_Registros.getString("curso"), Conj_Registros.getString("sexo"), Conj_Registros.getString("fecha"));;
+                existe = new User(Conj_Registros.getInt("id_us"),Conj_Registros.getString("email"), Conj_Registros.getString("pass"),Conj_Registros.getInt("rol"),Conj_Registros.getInt("validado"));
             }
         } catch (SQLException ex) {
             System.out.println("Error en el acceso a la BD.");
@@ -69,7 +69,7 @@ public class ConexionEstatica {
      * Usando una LinkedList.
      *
      * @return
-     */
+     *//**
     public static LinkedList obtenerUsuarios() {
         LinkedList personasBD = new LinkedList<>();
         User p = null;
@@ -84,14 +84,14 @@ public class ConexionEstatica {
         }
         return personasBD;
     }
-
+**/
     /**
      * @param email
      * @param nombre
      * @param apellido
      * @throws java.sql.SQLException
      */
-
+/**
     //----------------------------------------------------------
     public static void Modificar_User(String email, String nombre, String apellido) throws SQLException {
         String Sentencia = "UPDATE usuarios SET nombre = '" + nombre + "',apellidos = '" + apellido + "' WHERE email = '" + email + "'";
@@ -109,5 +109,5 @@ public class ConexionEstatica {
         String Sentencia = "DELETE FROM `usuarios` WHERE email = '" + email + "'";
         ConexionEstatica.Sentencia_SQL.executeUpdate(Sentencia);
     }
-
+**/
 }

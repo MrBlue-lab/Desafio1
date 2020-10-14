@@ -15,6 +15,7 @@
             String nombre = request.getParameter("nombre");
             String apellido = request.getParameter("apellido");
             ConexionEstatica.nueva();
+            /**
             ConexionEstatica.Modificar_User(email, nombre, apellido);
             session.setAttribute("usuarios", ConexionEstatica.obtenerUsuarios());
             ConexionEstatica.cerrarBD();
@@ -31,7 +32,7 @@
         session.setAttribute("usuarios", ConexionEstatica.obtenerUsuarios());
         ConexionEstatica.cerrarBD();
     }
-
+**/
     response.sendRedirect("crud.jsp");
 
 %>

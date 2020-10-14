@@ -13,7 +13,7 @@
         <title>Elección</title>
     </head>
     <body>
-        <form name="for" action="controlador.jsp" method="POST">
+        <form name="for" action="../Controladores_comun/controlador.jsp" method="POST">
             <fieldset>
                 <legend>Elige rol</legend>
                 <p>
@@ -21,7 +21,7 @@
                         <option value="0"selected>Usuario
                             <%
                                 User u = (User) session.getAttribute("logueado");
-                                if (u.getTipo() == 1) {
+                                if (u.getRol() == 1) {
                             %>
                         <option value="1">Administrador
                             <%
