@@ -23,13 +23,27 @@
                 </div>
             </div>
         </nav>
-        <h1><span class="glyphicon glyphicon-user"> </span></h1>
-        <form name="for" action="Controladores_comun/controlador.jsp" method="POST">
-            <p>Nombre <input type="text" name="usuario" placeholder="usuario">
-            <p>Contraseña <input type="password" name="contrasena" placeholder="contraseña"></p>
-            <p><a href="recuperar.jsp">recuperar contraseña</a></p>
-            <input type="submit" name="loguin" value="Loguin">
-            <input type="submit" name="registrar" value="Registrar">
-        </form>
+        <div class="container h-100">
+            <div class="row justify-content-center h-100">
+                <div class="col-sm-12 align-self-center">
+                    <div class="card shadow">
+                        <div class="card-head text-center">
+                            <h1><span class="glyphicon glyphicon-user"> LOGUIN</span></h1>
+                        </div>
+                        <div class="container col-sm-4">
+                        </div>
+                        <div class="card-body col-sm-6 justify-content-center">      
+                            <form name="for" action="Controladores_comun/controlador.jsp" method="POST">
+                                <p>Nombre <input type="text" name="usuario" placeholder="usuario">
+                                <p>Contraseña <input type="password" name="contrasena" placeholder="contraseña"></p>
+                                <p><a href="recuperar.jsp">recuperar contraseña</a></p>
+                                <input type="submit" name="loguin" value="Loguin">
+                                <input type="submit" name="registrar" value="Registrar">
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
     </body>
 </html>

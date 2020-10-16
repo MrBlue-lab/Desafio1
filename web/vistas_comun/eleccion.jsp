@@ -21,7 +21,7 @@
                         <option value="0"selected>Usuario
                             <%
                                 User u = (User) session.getAttribute("logueado");
-                                if (u.getRol() == 1) {
+                                if (u.getRol() == 2) {
                             %>
                         <option value="1">Administrador
                             <%

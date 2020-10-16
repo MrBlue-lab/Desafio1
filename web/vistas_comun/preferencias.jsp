@@ -1,6 +1,6 @@
 <%-- 
-    Document   : home
-    Created on : 25 sept. 2020, 13:27:14
+    Document   : preferencias
+    Created on : 16 oct. 2020, 12:37:40
     Author     : daw205
 --%>
 
@@ -11,7 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../presentacion/elementos.jsp" />
-        <title>Home</title>
+        <title>Preferencias</title>
     </head>
     <body>
         <jsp:include page="../presentacion/header.jsp" />
@@ -24,11 +24,19 @@
                                 User u = (User) session.getAttribute("logueado");
                             %>
                         </div>
-                        <div class="card-body m-5">             
-                            <legend><h1><%=u.getEmail()%></h1></legend>
-                            <h3><%=u.getNombre()%></h3>
-                            <h3><%=u.getApellidos()%></h3>
-                            <h3><%=u.getRol()%></h3>
+                        <div class="card-body m-5">        
+
+                            <form name="for" action="../Controladores_comun/controlador.jsp" method="POST">
+                                <fieldset>
+                                    <legend><h1>Preferencias</h1></legend>
+                                    <br/>
+                                    <p>DOOM <input type="number" name="edad" value="0"  max="100" min="0" ></p>
+                                    <br/>
+                                    <p>Crossing <input type="number" name="edad" value="0"  max="100" min="0" ></p>
+                                    <br/>
+                                    <input type="submit" name="registro" value="registrarse">
+                                </fieldset>
+                            </form>
                         </div>
                     </div>
                 </div>

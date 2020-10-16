@@ -15,6 +15,7 @@ public class User {
     private final String email;
     private String pass;
     private String nombre;
+    private String nick;
     private String apellidos;
     private int edad;
     private String sexo;
@@ -33,6 +34,63 @@ public class User {
         this.pass = pass;
         this.rol = rol;
         this.validado = validado;
+    }
+
+    public User( String email, String pass, String nombre, String nick, String apellidos, int edad, String sexo) {
+        this.id = 0;
+        this.email = email;
+        this.pass = pass;
+        this.nombre = nombre;
+        this.nick = nick;
+        this.apellidos = apellidos;
+        this.edad = edad;
+        this.sexo = sexo;
+    }
+
+
+    public User(int id, String email, String pass, String nombre, String nick, String apellidos, int edad, String sexo, int rol, int validado) {
+        this.id = id;
+        this.email = email;
+        this.pass = pass;
+        this.nombre = nombre;
+        this.nick = nick;
+        this.apellidos = apellidos;
+        this.edad = edad;
+        this.sexo = sexo;
+        this.rol = rol;
+        this.validado = validado;
+    }
+    public User(int id, String email, String nombre, String nick, String apellidos, int edad, String sexo, int rol, int validado) {
+        this.id = id;
+        this.email = email;
+        this.pass = pass;
+        this.nombre = nombre;
+        this.nick = nick;
+        this.apellidos = apellidos;
+        this.edad = edad;
+        this.sexo = sexo;
+        this.rol = rol;
+        this.validado = validado;
+    }
+
+    public String getNick() {
+        return nick;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public int getValidado() {
+        return validado;
     }
 
     public String getPass() {
