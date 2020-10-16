@@ -13,6 +13,7 @@ public class User {
 
     private final int id;
     private final String email;
+    private String casa;
     private String pass;
     private String nombre;
     private String nick;
@@ -26,6 +27,7 @@ public class User {
         this.id = id;
         this.email = email;
         this.pass = pass;
+        this.casa="";
     }
 
     public User(int id, String email, String pass, int rol, int validado) {
@@ -34,6 +36,7 @@ public class User {
         this.pass = pass;
         this.rol = rol;
         this.validado = validado;
+        this.casa="";
     }
 
     public User( String email, String pass, String nombre, String nick, String apellidos, int edad, String sexo) {
@@ -45,6 +48,7 @@ public class User {
         this.apellidos = apellidos;
         this.edad = edad;
         this.sexo = sexo;
+        this.casa="";
     }
 
 
@@ -59,11 +63,11 @@ public class User {
         this.sexo = sexo;
         this.rol = rol;
         this.validado = validado;
+        this.casa="";
     }
     public User(int id, String email, String nombre, String nick, String apellidos, int edad, String sexo, int rol, int validado) {
         this.id = id;
         this.email = email;
-        this.pass = pass;
         this.nombre = nombre;
         this.nick = nick;
         this.apellidos = apellidos;
@@ -71,10 +75,19 @@ public class User {
         this.sexo = sexo;
         this.rol = rol;
         this.validado = validado;
+        this.casa="";
     }
 
     public String getNick() {
         return nick;
+    }
+
+    public String getCasa() {
+        return casa;
+    }
+
+    public void setCasa(String casa) {
+        this.casa = casa;
     }
 
     public void setNick(String nick) {

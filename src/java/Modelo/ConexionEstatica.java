@@ -65,14 +65,14 @@ public class ConexionEstatica {
         return existe;//Si devolvemos null el usuario no existe.
     }
 
-    public static boolean User_tiene_preferencias(int id) {
-        boolean tiene = false;
+    public static String User_tiene_casa(int id) {
+        String tiene = "";
         try {
-            String sentencia = "SELECT * FROM inter_us WHERE id_us = '" + id + "'";
+            String sentencia = "SELECT * FROM casa_estudiante,casas WHERE casa_estudiante.id_us = '" + id + "' && casa_estudiante.id_int=casas.id_int ";
             ConexionEstatica.Conj_Registros = ConexionEstatica.Sentencia_SQL.executeQuery(sentencia);
             if (ConexionEstatica.Conj_Registros.next())//Si devuelve true es que existe.
             {
-                tiene = true;
+                tiene = Conj_Registros.getString("nombre");
             }
         } catch (SQLException ex) {
             System.out.println("Error en el acceso a la BD.");
@@ -85,19 +85,21 @@ public class ConexionEstatica {
      *
      * @return
      */
-    /**
-     * public static LinkedList obtenerUsuarios() { LinkedList personasBD = new
-     * LinkedList<>(); User p = null; try { String sentencia = "SELECT * FROM
-     * usuarios"; ConexionEstatica.Conj_Registros =
-     * ConexionEstatica.Sentencia_SQL.executeQuery(sentencia); while
-     * (Conj_Registros.next()) { p = new User(Conj_Registros.getInt("tipo"),
-     * Conj_Registros.getString("email"), Conj_Registros.getString("nombre"),
-     * Conj_Registros.getString("apellidos"), Conj_Registros.getString("pass"),
-     * Conj_Registros.getInt("edad"), Conj_Registros.getString("curso"),
-     * Conj_Registros.getString("sexo"), Conj_Registros.getString("fecha"));;
-     * personasBD.add(p); } } catch (SQLException ex) { } return personasBD; }
-*
-     */
+    public static LinkedList obtenerUsuarios() {
+        LinkedList personasBD = new LinkedList<>();
+        User p = null;
+        try {
+            String sentencia = "SELECT * FROM user";
+            ConexionEstatica.Conj_Registros = ConexionEstatica.Sentencia_SQL.executeQuery(sentencia);
+            while (Conj_Registros.next()) {
+                p = new User(Conj_Registros.getInt("id_us"), Conj_Registros.getString("email"), Conj_Registros.getString("pass"), Conj_Registros.getString("nombre"), Conj_Registros.getString("nick"), Conj_Registros.getString("apellidos"), Conj_Registros.getInt("edad"), Conj_Registros.getString("sexo"), Conj_Registros.getInt("rol"), Conj_Registros.getInt("validado"));
+                personasBD.add(p);
+            }
+        } catch (SQLException ex) {
+        }
+        return personasBD;
+    }
+
     /**
      * @param email
      * @param nombre
@@ -118,6 +120,7 @@ public class ConexionEstatica {
         String Sentencia = "INSERT INTO user  VALUES (null,'" + u.getEmail() + "','" + u.getNick() + "',  '" + u.getPass() + "',  '" + u.getNombre() + "', '" + u.getApellidos() + "', " + u.getEdad() + ", '" + u.getSexo() + "',null, 1,0)";
         ConexionEstatica.Sentencia_SQL.executeUpdate(Sentencia);
     }
+
     /*
     //----------------------------------------------------------
     public static void Borrar_User(String email) throws SQLException {
@@ -125,4 +128,8 @@ public class ConexionEstatica {
         ConexionEstatica.Sentencia_SQL.executeUpdate(Sentencia);
     }
 **/
+    public static void sombrero_seleccionador(int i, int id, int valoracion) throws SQLException {
+        String Sentencia = "INSERT INTO casa_estudiante  VALUES (" + i + ", " + id + "," + valoracion + ")";
+        ConexionEstatica.Sentencia_SQL.executeUpdate(Sentencia);
+    }
 }

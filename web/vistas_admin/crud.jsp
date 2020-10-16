@@ -11,18 +11,20 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <jsp:include page="../presentacion/elementos.jsp" />
         <title>Usuarios</title>
     </head>
     <body>
+        <jsp:include page="../presentacion/header.jsp" />
         <%
             if (session.getAttribute("usuarios") == null) {
-                out.print("no existen usuarios error");
+                out.print("<h1>no existen usuarios error</h1>");
             } else {
                 LinkedList<User> lista = (LinkedList) session.getAttribute("usuarios");
                 for (int i = 0; i < lista.size(); i++) {
                     User aux = lista.get(i);
         %>
-        <form name="for" action="administrador.jsp" method="POST">
+        <form name="for" action="../Controladores_admin/admin.jsp" method="POST">
             <input type="text" name="email" value="<%=aux.getEmail()%>" readonly="">
             <input type="text" name="nombre" value="<%=aux.getNombre()%>">
             <input type="text" name="apellido" value="<%=aux.getApellidos()%>"> 
@@ -34,7 +36,7 @@
             }
         }
     %>  
-    <form name="for" action="controlador.jsp" method="POST">
+    <form name="for" action="../vistas_comun/eleccion.jsp" method="POST">
         <input type="submit" name="back" value="Back">
     </form>
 </body>

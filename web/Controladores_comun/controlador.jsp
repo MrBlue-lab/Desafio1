@@ -44,13 +44,14 @@
         String pass = request.getParameter("contrasena");
         ConexionEstatica.nueva();
         if (ConexionEstatica.loguin(user, pass) != null) {
-            User u=ConexionEstatica.loguin(user, pass);
-            session.setAttribute("logueado",u);
-            if (!ConexionEstatica.User_tiene_preferencias(u.getId())) {
+            User u = ConexionEstatica.loguin(user, pass);
+            if (ConexionEstatica.User_tiene_casa(u.getId()).equals("")) {
                 response.sendRedirect("../vistas_comun/preferencias.jsp");
             } else {
                 response.sendRedirect("../vistas_comun/eleccion.jsp");
+                u.setCasa(ConexionEstatica.User_tiene_casa(u.getId()));
             }
+            session.setAttribute("logueado", u);
         } else {
             response.sendRedirect("../index.jsp");
         }
@@ -61,9 +62,34 @@
     if (request.getParameter("eleccion") != null) {
         String aux = request.getParameter("tipo");
         if (Integer.parseInt(aux) == 2) {
-            response.sendRedirect("crud.jsp");
+            response.sendRedirect("../Controladores_admin/admin.jsp");
         } else {
             response.sendRedirect("../vistas_user/home.jsp");
         }
+    }
+
+    //eleccion de usuario logueado primera vez
+    if (request.getParameter("preferencias") != null) {
+        int casa = 0;
+        int sombrero = 0;
+        for (int i = 0; i < 10; i++) {
+            String aux = request.getParameter("" + i);
+            casa = casa + Integer.parseInt(aux);
+        }
+        if (casa >= 100 && casa <= 170) {
+            sombrero = 4;
+        } else if (casa >= 180 && casa <= 250) {
+            sombrero = 3;
+        } else if (casa >= 260 && casa <= 320) {
+            sombrero = 2;
+        } else if (casa >= 330 && casa <= 400) {
+            sombrero = 1;
+        }
+
+        ConexionEstatica.nueva();
+        User u = (User) session.getAttribute("logueado");
+        ConexionEstatica.sombrero_seleccionador(sombrero, u.getId(), casa);
+        ConexionEstatica.cerrarBD();
+        response.sendRedirect("../vistas_comun/eleccion.jsp");
     }
 %>

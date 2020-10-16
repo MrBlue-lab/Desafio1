@@ -28,7 +28,7 @@
                             <legend><h1><%=u.getEmail()%></h1></legend>
                             <h3><%=u.getNombre()%></h3>
                             <h3><%=u.getApellidos()%></h3>
-                            <h3><%=u.getRol()%></h3>
+                            <h3><%=u.getCasa()%></h3>
                         </div>
                     </div>
                 </div>

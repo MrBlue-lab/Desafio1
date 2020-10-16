@@ -10,20 +10,22 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <jsp:include page="../presentacion/elementos.jsp" />
         <title>Elección</title>
     </head>
     <body>
+        <jsp:include page="../presentacion/header.jsp" />
         <form name="for" action="../Controladores_comun/controlador.jsp" method="POST">
             <fieldset>
                 <legend>Elige rol</legend>
                 <p>
                     <select name="tipo">
-                        <option value="0"selected>Usuario
+                        <option value="1"selected>Usuario
                             <%
                                 User u = (User) session.getAttribute("logueado");
                                 if (u.getRol() == 2) {
                             %>
-                        <option value="1">Administrador
+                        <option value="2">Administrador
                             <%
                                 }
                             %>

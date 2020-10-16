@@ -24,7 +24,7 @@
             ConexionEstatica.nueva();
             ConexionEstatica.Borrar_User(email);
             session.setAttribute("usuarios", ConexionEstatica.obtenerUsuarios());
-            ConexionEstatica.cerrarBD();
+            ConexionEstatica.cerrarBD();**/
         }
 
     } else {
@@ -32,7 +32,6 @@
         session.setAttribute("usuarios", ConexionEstatica.obtenerUsuarios());
         ConexionEstatica.cerrarBD();
     }
-**/
-    response.sendRedirect("crud.jsp");
+    response.sendRedirect("../vistas_admin/crud.jsp");
 
 %>
