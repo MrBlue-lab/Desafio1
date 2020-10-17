@@ -67,3 +67,25 @@ body{
 .w-100{
     width: 100%;
 }
+.w-2{
+    width: 20%;
+}
+.w-5{
+    width: 5%;
+}
+.container {
+    width: 1332px;
+}
+.p-t1{
+    padding-top: 1px !important;
+}
+.p-t7{
+    padding-top: 7px !important;
+}
+h4{
+    font-size: 20px;
+}
+.navbar-header{
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}

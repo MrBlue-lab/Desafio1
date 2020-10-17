@@ -32,9 +32,7 @@
         String aux = request.getParameter("edad");
         int edad = Integer.parseInt(aux);
         User u = new User(email, pass, nombre, nick, apellido, edad, sexo);
-        ConexionEstatica.nueva();
         ConexionEstatica.Insertar_User(u);
-        ConexionEstatica.cerrarBD();
         response.sendRedirect("../index.jsp");
     }
 
@@ -42,7 +40,6 @@
     if (request.getParameter("loguin") != null) {
         String user = request.getParameter("usuario");
         String pass = request.getParameter("contrasena");
-        ConexionEstatica.nueva();
         if (ConexionEstatica.loguin(user, pass) != null) {
             User u = ConexionEstatica.loguin(user, pass);
             if (ConexionEstatica.User_tiene_casa(u.getId()).equals("")) {
@@ -55,7 +52,6 @@
         } else {
             response.sendRedirect("../index.jsp");
         }
-        ConexionEstatica.cerrarBD();
     }
 
     //eleccion de usuario logueado
@@ -86,10 +82,10 @@
             sombrero = 1;
         }
 
-        ConexionEstatica.nueva();
         User u = (User) session.getAttribute("logueado");
         ConexionEstatica.sombrero_seleccionador(sombrero, u.getId(), casa);
-        ConexionEstatica.cerrarBD();
+        u.setCasa(ConexionEstatica.User_tiene_casa(u.getId()));
+        session.setAttribute("logueado", u);
         response.sendRedirect("../vistas_comun/eleccion.jsp");
     }
 %>

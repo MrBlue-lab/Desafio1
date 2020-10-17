@@ -50,22 +50,37 @@ public class ConexionEstatica {
         }
     }
 
-    public static User loguin(String email, String pass) {
+    public static User loguin(String email, String pass) throws SQLException {
+        ConexionEstatica.nueva();
         User existe = null;
+        String sql = "SELECT * FROM user WHERE email = ? && pass = ?";
+        PreparedStatement ps = null;
         try {
-            String sentencia = "SELECT * FROM user WHERE email = '" + email + "' && pass = '" + pass + "'";
-            ConexionEstatica.Conj_Registros = ConexionEstatica.Sentencia_SQL.executeQuery(sentencia);
-            if (ConexionEstatica.Conj_Registros.next())//Si devuelve true es que existe.
-            {
-                existe = new User(Conj_Registros.getInt("id_us"), Conj_Registros.getString("email"), Conj_Registros.getString("pass"), Conj_Registros.getString("nombre"), Conj_Registros.getString("nick"), Conj_Registros.getString("apellidos"), Conj_Registros.getInt("edad"), Conj_Registros.getString("sexo"), Conj_Registros.getInt("rol"), Conj_Registros.getInt("validado"));
-            }
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, pass);
+            ConexionEstatica.Conj_Registros = ps.executeQuery();
+
         } catch (SQLException ex) {
-            System.out.println("Error en el acceso a la BD.");
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                if (ConexionEstatica.Conj_Registros.next()){
+                    existe = new User(Conj_Registros.getInt("id_us"), Conj_Registros.getString("email"), Conj_Registros.getString("pass"), Conj_Registros.getString("nombre"), Conj_Registros.getString("nick"), Conj_Registros.getString("apellidos"), Conj_Registros.getInt("edad"), Conj_Registros.getString("sexo"), Conj_Registros.getInt("rol"), Conj_Registros.getInt("validado"));
+                }
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
         }
         return existe;//Si devolvemos null el usuario no existe.
     }
 
     public static String User_tiene_casa(int id) {
+        ConexionEstatica.nueva();
         String tiene = "";
         try {
             String sentencia = "SELECT * FROM casa_estudiante,casas WHERE casa_estudiante.id_us = '" + id + "' && casa_estudiante.id_int=casas.id_int ";
@@ -74,6 +89,7 @@ public class ConexionEstatica {
             {
                 tiene = Conj_Registros.getString("nombre");
             }
+            ConexionEstatica.cerrarBD();
         } catch (SQLException ex) {
             System.out.println("Error en el acceso a la BD.");
         }
@@ -86,6 +102,7 @@ public class ConexionEstatica {
      * @return
      */
     public static LinkedList obtenerUsuarios() {
+        ConexionEstatica.nueva();
         LinkedList personasBD = new LinkedList<>();
         User p = null;
         try {
@@ -95,6 +112,7 @@ public class ConexionEstatica {
                 p = new User(Conj_Registros.getInt("id_us"), Conj_Registros.getString("email"), Conj_Registros.getString("pass"), Conj_Registros.getString("nombre"), Conj_Registros.getString("nick"), Conj_Registros.getString("apellidos"), Conj_Registros.getInt("edad"), Conj_Registros.getString("sexo"), Conj_Registros.getInt("rol"), Conj_Registros.getInt("validado"));
                 personasBD.add(p);
             }
+            ConexionEstatica.cerrarBD();
         } catch (SQLException ex) {
         }
         return personasBD;
@@ -114,11 +132,35 @@ public class ConexionEstatica {
      * "'"; ConexionEstatica.Sentencia_SQL.executeUpdate(Sentencia); }
      *
      * @param u
+     * @throws java.sql.SQLException
      */
     //----------------------------------------------------------
     public static void Insertar_User(User u) throws SQLException {
-        String Sentencia = "INSERT INTO user  VALUES (null,'" + u.getEmail() + "','" + u.getNick() + "',  '" + u.getPass() + "',  '" + u.getNombre() + "', '" + u.getApellidos() + "', " + u.getEdad() + ", '" + u.getSexo() + "',null, 1,0)";
-        ConexionEstatica.Sentencia_SQL.executeUpdate(Sentencia);
+        ConexionEstatica.nueva();
+        String sql = "INSERT INTO `user` (`id_us`, `email`, `nick`, `pass`, `nombre`, `apellidos`, `edad`, `sexo`, `img`, `rol`, `validado`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, '1', '0');";
+        PreparedStatement ps = null;
+        try {
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setString(1, u.getEmail());
+            ps.setString(2, u.getNick());
+            ps.setString(3, u.getPass());
+            ps.setString(4, u.getNombre());
+            ps.setString(5, u.getApellidos());
+            ps.setInt(6, u.getEdad());
+            ps.setString(7, u.getSexo());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
+        }
     }
 
     /*
@@ -129,7 +171,26 @@ public class ConexionEstatica {
     }
 **/
     public static void sombrero_seleccionador(int i, int id, int valoracion) throws SQLException {
-        String Sentencia = "INSERT INTO casa_estudiante  VALUES (" + i + ", " + id + "," + valoracion + ")";
-        ConexionEstatica.Sentencia_SQL.executeUpdate(Sentencia);
+        ConexionEstatica.nueva();
+        String sql = "INSERT INTO casa_estudiante  VALUES (?,?,?)";
+        PreparedStatement ps = null;
+        try {
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setInt(1, i);
+            ps.setInt(2, id);
+            ps.setInt(3, valoracion);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
+        }
     }
 }

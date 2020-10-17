@@ -16,28 +16,44 @@
     </head>
     <body>
         <jsp:include page="../presentacion/header.jsp" />
-        <%
-            if (session.getAttribute("usuarios") == null) {
-                out.print("<h1>no existen usuarios error</h1>");
-            } else {
-                LinkedList<User> lista = (LinkedList) session.getAttribute("usuarios");
-                for (int i = 0; i < lista.size(); i++) {
-                    User aux = lista.get(i);
-        %>
-        <form name="for" action="../Controladores_admin/admin.jsp" method="POST">
-            <input type="text" name="email" value="<%=aux.getEmail()%>" readonly="">
-            <input type="text" name="nombre" value="<%=aux.getNombre()%>">
-            <input type="text" name="apellido" value="<%=aux.getApellidos()%>"> 
-            <input type="submit" name="editar" value="Editar">
-            <input type="submit" name="eliminar" value="Eliminar">
-        </form>
+        <div class="container h-100">
+            <div class="col-sm-12 align-self-center text-center">
+                <div class="card-head "> <ul class="list-group">
+                        <%
+                            if (session.getAttribute("usuarios") == null) {
+                                out.print("<h1>no existen usuarios error</h1>");
+                            } else {
+                                LinkedList<User> lista = (LinkedList) session.getAttribute("usuarios");
+                                for (int i = 0; i < lista.size(); i++) {
+                                    User aux = lista.get(i);
+                        %>
 
-    <%
-            }
-        }
-    %>  
-    <form name="for" action="../vistas_comun/eleccion.jsp" method="POST">
-        <input type="submit" name="back" value="Back">
-    </form>
-</body>
+                        <li class="list-group-item">
+                            <form name="for" action="../Controladores_admin/admin.jsp" method="POST">
+                                <input type="text" name="email" value="<%=aux.getEmail()%>" readonly="" class="w-20">
+                                <input type="text" name="nick" value="<%=aux.getNick()%>" class="w-20">
+                                <input type="text" name="nombre" value="<%=aux.getNombre()%>" class="w-20">
+                                <input type="text" name="apellido" value="<%=aux.getApellidos()%>" class="w-20"> 
+                                <input type="number" name="edad" value="<%=aux.getEdad()%>" class="w-5">  <br>
+                                <input type="Radio" name="sexo" value="mujer"checked>Mujer
+                                <input type="Radio" name="sexo" value="hombre">Hombre
+                                <input type="number" name="validado" value="<%=aux.getValidado()%>" class="w-5"> 
+                                <input type="number" name="rol" value="<%=aux.getRol()%>" class="w-5"> 
+                                <div class="btn-group">
+                                    <input type="submit" class="btn btn-primary" name="editar" value="Editar">
+                                    <input type="submit" class="btn btn-danger" name="eliminar" value="Borrar">
+                                </div> 
+                            </form>
+                        </li>
+                        <%
+                                }
+                            }
+                        %> 
+                    </ul> 
+                    <form name="for" action="../vistas_comun/eleccion.jsp" method="POST">
+                        <input type="submit" name="back" value="Back">
+                    </form> 
+                </div>
+            </div>
+    </body>
 </html>

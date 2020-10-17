@@ -23,10 +23,10 @@
                     %>
                 </div>
                 <div class="card-body m-5">             
-                    <legend><h1><%=u.getEmail()%></h1></legend>
-                    <h3><%=u.getNombre()%></h3>
-                    <h3><%=u.getApellidos()%></h3>
-                    <h3><%=u.getCasa()%></h3>
+                    <legend><h1>
+                    <img src="../css/img/<%=u.getCasa()%>.png" class="rounded-circle z-depth-0" alt="casa"><%=u.getNick()%></h1></legend>
+                    <h3><%= u.getEmail() %></h3>
+                    <h3><%=u.getNombre()%> <%=u.getApellidos()%></h3>
                 </div>
             </div>
         </div>
