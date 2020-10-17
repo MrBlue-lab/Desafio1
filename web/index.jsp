@@ -19,7 +19,7 @@
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Facewarts</a>
+                    <a class="navbar-brand"><h2>Facewarts</h2></a>
                 </div>
             </div>
         </nav>
