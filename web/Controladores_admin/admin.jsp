@@ -12,19 +12,23 @@
         String email = request.getParameter("email");
 
         if (request.getParameter("editar") != null) {
+
+            String nick = request.getParameter("nick");
             String nombre = request.getParameter("nombre");
             String apellido = request.getParameter("apellido");
-            ConexionEstatica.nueva();
-            /**
-            ConexionEstatica.Modificar_User(email, nombre, apellido);
+            String aux = request.getParameter("edad");
+            int edad = Integer.parseInt(aux);
+            String sexo = request.getParameter("sexo");
+            aux = request.getParameter("validado");
+            int validado = Integer.parseInt(aux);
+            aux = request.getParameter("rol");
+            int rol = Integer.parseInt(aux);
+            ConexionEstatica.Modificar_User(email, nombre, nick, apellido, edad, sexo, rol, validado);
             session.setAttribute("usuarios", ConexionEstatica.obtenerUsuarios());
-            ConexionEstatica.cerrarBD();
 
         } else if (request.getParameter("eliminar") != null) {
-            ConexionEstatica.nueva();
             ConexionEstatica.Borrar_User(email);
             session.setAttribute("usuarios", ConexionEstatica.obtenerUsuarios());
-            ConexionEstatica.cerrarBD();**/
         }
 
     } else {

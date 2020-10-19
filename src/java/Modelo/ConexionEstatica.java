@@ -67,7 +67,7 @@ public class ConexionEstatica {
             System.out.println("Error general: " + ex.getMessage());
         } finally {
             try {
-                if (ConexionEstatica.Conj_Registros.next()){
+                if (ConexionEstatica.Conj_Registros.next()) {
                     existe = new User(Conj_Registros.getInt("id_us"), Conj_Registros.getString("email"), Conj_Registros.getString("pass"), Conj_Registros.getString("nombre"), Conj_Registros.getString("nick"), Conj_Registros.getString("apellidos"), Conj_Registros.getInt("edad"), Conj_Registros.getString("sexo"), Conj_Registros.getInt("rol"), Conj_Registros.getInt("validado"));
                 }
                 ps.close();
@@ -119,18 +119,82 @@ public class ConexionEstatica {
     }
 
     /**
+     * INSERT INTO `mensajes` (`id_men`, `id_env`, `id_rez`, `asunto`,
+     * `contenido`, `fecha`, `leido`) VALUES (NULL, '8', '8', 'jajaxd', 'hola yo
+     * soy tu morenito 19', '2020-10-19', '0');
+     */
+
+    /**
+     * @param email
+     * @return
+     */
+    public static LinkedList getMensajes(String email) {
+        ConexionEstatica.nueva();
+        LinkedList mensajesRE = new LinkedList<>();
+        PreparedStatement ps = null;
+        String sql = "SELECT user.email AS 'recibido',mensajes.*,(SELECT user.email FROM user WHERE user.id_us=mensajes.id_env) as 'enviado' FROM user,mensajes where user.id_us = mensajes.id_rez && user.email = ?";
+        try {
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setString(1, email);
+            ConexionEstatica.Conj_Registros = ps.executeQuery();
+        } catch (SQLException ex) {
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                Mensaje p = null;
+                while (ConexionEstatica.Conj_Registros.next()) {
+                    
+                    p = new Mensaje(Conj_Registros.getInt("id_men"), Conj_Registros.getString("enviado"), Conj_Registros.getString("recibido"), Conj_Registros.getString("asunto"), Conj_Registros.getString("contenido"), Conj_Registros.getString("fecha"), Conj_Registros.getInt("leido"));
+                    mensajesRE.add(p);
+                }
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
+        }
+        return mensajesRE;
+    }
+
+    /**
      * @param email
      * @param nombre
      * @param apellido
      * @throws java.sql.SQLException
      */
+    //---------------------------------------------------------- public
+    public static void Modificar_User(String email, String nombre, String nick, String apellido, int edad, String sexo, int rol, int validado) throws SQLException {
+        ConexionEstatica.nueva();
+        String sql = "UPDATE `user` SET `nick` = ?, `nombre` = ?, `apellidos` = ?, `edad` = ?, `sexo` = ?, `rol` = ?, `validado` = ? WHERE `email` = ?";
+        PreparedStatement ps = null;
+        try {
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setString(1, nick);
+            ps.setString(2, nombre);
+            ps.setString(3, apellido);
+            ps.setInt(4, edad);
+            ps.setString(5, sexo);
+            ps.setInt(6, rol);
+            ps.setInt(7, validado);
+            ps.setString(8, email);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
+        }
+    }
+
     /**
-     * //---------------------------------------------------------- public
-     * static void Modificar_User(String email, String nombre, String apellido)
-     * throws SQLException { String Sentencia = "UPDATE usuarios SET nombre = '"
-     * + nombre + "',apellidos = '" + apellido + "' WHERE email = '" + email +
-     * "'"; ConexionEstatica.Sentencia_SQL.executeUpdate(Sentencia); }
-     *
      * @param u
      * @throws java.sql.SQLException
      */
@@ -163,13 +227,29 @@ public class ConexionEstatica {
         }
     }
 
-    /*
     //----------------------------------------------------------
     public static void Borrar_User(String email) throws SQLException {
-        String Sentencia = "DELETE FROM `usuarios` WHERE email = '" + email + "'";
-        ConexionEstatica.Sentencia_SQL.executeUpdate(Sentencia);
+        ConexionEstatica.nueva();
+        String sql = "DELETE FROM `user` WHERE email = ?";
+        PreparedStatement ps = null;
+        try {
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
+        }
     }
-**/
+
     public static void sombrero_seleccionador(int i, int id, int valoracion) throws SQLException {
         ConexionEstatica.nueva();
         String sql = "INSERT INTO casa_estudiante  VALUES (?,?,?)";

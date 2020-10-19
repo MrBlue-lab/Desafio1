@@ -10,7 +10,9 @@ and open the template in the editor.
 
 .rounded-circle{
     border-radius: 50%;
-    width: 50px;padding-top: 0px;
+    width: 50px;
+    padding-top: 0px; 
+    height: 50px;
 }
 
 li > a{
@@ -67,6 +69,9 @@ body{
 .w-100{
     width: 100%;
 }
+.w-100px{
+    width: 600px;
+}
 .w-2{
     width: 20%;
 }
@@ -88,4 +93,17 @@ h4{
 .navbar-header{
     margin-left: 10px !important;
     margin-right: 10px !important;
+}
+.eye{
+    width: 40px;
+    font-size: 20px;
+}
+.w-50{
+    width: 47%;
+}
+.fondogris{
+    background-color: dimgrey;
+}
+.fondoblanco{
+    background-color: white;    
 }
