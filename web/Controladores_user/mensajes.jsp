@@ -16,7 +16,16 @@
                 m = (Mensaje) mensajesRE.get(i);
         %>
         <tr>
-            <td class="eye"><img src='<%=m.getFotoimgString() %>' class="mini_foto rounded-circle z-depth-0" alt='Foto de perfil no encontrada'></td>
+            <td class="eye">
+                <%if (m.getFotoBlob()  != null) {%>
+                <img src='<%=m.getFotoimgString()%>' class="mini_foto rounded-circle z-depth-0" alt='Foto de perfil no encontrada'>
+                <%} else {%>
+
+                <img src='../css/img/user1.jpg' class="mini_foto rounded-circle z-depth-0" alt='Foto de perfil no encontrada'>
+                <%
+                    }
+                %>
+            </td>
             <td class="w-50"> <%= m.getEnviado_nick()%><br><%= m.getEmail_env()%></td>
             <td class="w-50">  <%= m.getAsunto()%></td>
             <td class="eye">
@@ -27,6 +36,9 @@
                 </div>
             </td>
         </tr>
-        <% }%>
+        <% }
+            m = null;
+            mensajesRE = null;
+        %>
     </tbody>
 </table>

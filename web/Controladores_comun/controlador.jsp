@@ -24,6 +24,20 @@
     //metodo para regresar en cualquier pagina
     if (request.getParameter("back") != null) {
         if (session.getAttribute("logueado") != null) {
+            LinkedList personasonline = (LinkedList) application.getAttribute("usuarios_online");
+            if (personasonline.size() > 1) {
+                User prin = (User) session.getAttribute("logueado");
+                User u = null;
+                int cont = 0;
+                do {
+                    u = (User) personasonline.get(cont);
+                    cont++;
+                } while (u.getId() != prin.getId());
+                personasonline.remove(cont-1);
+                application.setAttribute("usuarios_online", personasonline);
+            } else {
+                application.removeAttribute("usuarios_online");
+            }
             session.removeAttribute("logueado");
         }
         response.sendRedirect("../index.jsp");
@@ -81,10 +95,18 @@
             if (ConexionEstatica.User_tiene_casa(u) == null) {
                 response.sendRedirect("../vistas_comun/preferencias.jsp");
             } else {
-                response.sendRedirect("../vistas_comun/eleccion.jsp");
                 u = ConexionEstatica.User_tiene_casa(u);
+                response.sendRedirect("../vistas_comun/eleccion.jsp");
             }
             session.setAttribute("logueado", u);
+            if (application.getAttribute("usuarios_online") != null) {
+                LinkedList personasonline = (LinkedList) application.getAttribute("usuarios_online");
+                personasonline.addLast(u);
+                application.setAttribute("usuarios_online", personasonline);
+            } else {
+                LinkedList personasonline = new LinkedList<User>();
+                application.setAttribute("usuarios_online", personasonline);
+            }
         } else {
             response.sendRedirect("../index.jsp");
         }
@@ -116,7 +138,7 @@
         }
         response.sendRedirect("../vistas_user/home.jsp");
     }
-    
+
     //eleccion de usuario logueado primera vez
     if (request.getParameter("preferencias") != null) {
         int casa = 0;

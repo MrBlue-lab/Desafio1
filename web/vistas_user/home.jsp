@@ -22,9 +22,18 @@
                         User u = (User) session.getAttribute("logueado");
                     %>
                 </div>
-                <div class="card-body m-5">             
-                    <legend><h1><img src='<%=u.getFotoimgString() %>' class="" alt='Foto de perfil no encontrada' width="200" height="200"><%=u.getNick()%></h1></legend>
-                    <h3><%= u.getEmail() %></h3>
+                <div class="card-body m-5">     
+
+                    <legend><h1>
+                            <%if (u.getFotoBlob() != null) {%>
+                            <img src='<%=u.getFotoimgString()%>' class="" alt='Foto de perfil no encontrada' width="200" height="200">
+                            <%} else {%>
+                            <img src='../css/img/user1.jpg' alt='Foto de perfil no encontrada' width="200" height="200">
+                            <%
+                                }
+                            %>
+                            <%=u.getNick()%></h1></legend>
+                    <h3><%= u.getEmail()%></h3>
                     <h3><%=u.getNombre()%> <%=u.getApellidos()%></h3>
                 </div>
             </div>

@@ -11,17 +11,33 @@
         </div>
         <% User u = (User) session.getAttribute("logueado");
             if (!u.getCasa().equals("")) {
+                int cont_amigos = 0;
         %>
         <ul class="nav navbar-nav">
             <li class="dropdown">
                 <a class="dropdown-toggle p-t1" data-toggle="dropdown" href="#">
-                    <h4 class=" leta-20"><img src='<%=u.getFotoimgStringCasa() %>' class="rounded-circle z-depth-0" alt='casa'> <%=u.getCasa()%><span class="caret"></span></h4></a>
+                    <h4 class=" leta-20"><img src='<%=u.getFotoimgStringCasa()%>' class="rounded-circle z-depth-0" alt='casa'> <%=u.getCasa()%><span class="caret"></span></h4></a>
                 <ul class="dropdown-menu">
                     <li><a href="#"><h4>Información</h4></a></li>
-                    <li><a href="#"><h4>Alumnos de <%=u.getCasa()%></h4></a></li>
+                    <li><a href="../vistas_user/casa.jsp"><h4>Alumnos de <%=u.getCasa()%></h4></a></li>
                 </ul>
             </li>
-            <li><a href="#"><h4>Amigos</h4></a></li>
+            <li><a href="#">
+                    <%cont_amigos = ConexionEstatica.getAmigos((LinkedList) application.getAttribute("usuarios_online"), u.getId());%>
+                    <h4>Amigos <%=cont_amigos%></h4>
+                </a>
+            </li>
+            <%
+                if (u.getRol() >= 2) {
+            %>
+            <li>
+                <a href="../Controladores_admin/admin.jsp">
+                    <h4>Crud user</h4>
+                </a>
+            </li>
+            <%
+                }
+            %>
         </ul>
         <%
             }
@@ -41,7 +57,15 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle imagen" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    <img src='<%=u.getFotoimgString() %>' class="rounded-circle z-depth-0" alt='Foto de perfil no encontrada'>
+
+                    <%if (u.getFotoBlob() != null) {%>
+                    <img src='<%=u.getFotoimgString()%>' class="rounded-circle z-depth-0" alt='Foto de perfil no encontrada'>
+                    <%} else {%>
+
+                    <img src='../css/img/user1.jpg' class="rounded-circle z-depth-0" alt='Foto de perfil no encontrada'>
+                    <%
+                        }
+                    %>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary w-100px" aria-labelledby="navbarDropdownMenuLink-55">
                     <h3 class="text-center"> <%= u.getNick()%></h3>
