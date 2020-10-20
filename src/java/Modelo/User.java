@@ -28,10 +28,28 @@ public class User {
     private int validado;
     private byte[] foto;
     private Blob fotoBlob;
+    private byte[] fotoCasa;
+    private Blob fotoBlobCasa;
 
     public User() {
         this.id=0;
         this.email="";
+    }
+
+    public User(int id, String email, String casa, String nombre, String nick, String apellidos, int edad, String sexo, int rol, int validado, byte[] foto, Blob fotoBlob) {
+        this.id = id;
+        this.email = email;
+        this.casa = casa;
+        this.pass = pass;
+        this.nombre = nombre;
+        this.nick = nick;
+        this.apellidos = apellidos;
+        this.edad = edad;
+        this.sexo = sexo;
+        this.rol = rol;
+        this.validado = validado;
+        this.foto = foto;
+        this.fotoBlob = fotoBlob;
     }
 
     public User(int id, String email, String pass) {
@@ -206,6 +224,34 @@ public class User {
         try {
             byte[] imageBytes = this.fotoBlob.getBytes(1, (int) this.fotoBlob.length());
             String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
+            image = "data:image/jpg;base64," + encodedImage;
+            
+        } catch (SQLException ex) {
+        }
+        return image;
+    }
+
+    public byte[] getFotoCasa() {
+        return fotoCasa;
+    }
+
+    public void setFotoCasa(byte[] fotoCasa) {
+        this.fotoCasa = fotoCasa;
+    }
+
+    public Blob getFotoBlobCasa() {
+        return fotoBlobCasa;
+    }
+
+    public void setFotoBlobCasa(Blob fotoBlobCasa) {
+        this.fotoBlobCasa = fotoBlobCasa;
+    }
+    
+    public String getFotoimgStringCasa() {
+        String image =null;
+        try {
+            byte[] imageBytesCasa = this.fotoBlobCasa.getBytes(1, (int) this.fotoBlobCasa.length());
+            String encodedImage = Base64.getEncoder().encodeToString(imageBytesCasa);
             image = "data:image/jpg;base64," + encodedImage;
             
         } catch (SQLException ex) {

@@ -23,8 +23,7 @@
                     %>
                 </div>
                 <div class="card-body m-5">             
-                    <legend><h1>
-                    <img src="../css/img/<%=u.getCasa()%>.png" class="rounded-circle z-depth-0" alt="casa"><%=u.getNick()%></h1></legend>
+                    <legend><h1><img src='<%=u.getFotoimgString() %>' class="" alt='Foto de perfil no encontrada' width="200" height="200"><%=u.getNick()%></h1></legend>
                     <h3><%= u.getEmail() %></h3>
                     <h3><%=u.getNombre()%> <%=u.getApellidos()%></h3>
                 </div>

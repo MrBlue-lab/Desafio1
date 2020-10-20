@@ -5,6 +5,10 @@
  */
 package Modelo;
 
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.Base64;
+
 /**
  *
  * @author daw205
@@ -18,6 +22,21 @@ public class Mensaje {
     String contenido;
     String fecha;
     int leido;
+    private byte[] foto;
+    private Blob fotoBlob;
+
+    public Mensaje(int id_men, String email_env, String enviado_nick, String email_rez, String asunto, String contenido, String fecha, int leido, byte[] foto, Blob fotoBlob) {
+        this.id_men = id_men;
+        this.email_env = email_env;
+        this.enviado_nick = enviado_nick;
+        this.email_rez = email_rez;
+        this.asunto = asunto;
+        this.contenido = contenido;
+        this.fecha = fecha;
+        this.leido = leido;
+        this.foto = foto;
+        this.fotoBlob = fotoBlob;
+    }
 
     public Mensaje(int id_men, String email_env, String email_rez, String asunto, String contenido, String fecha, int leido) {
         this.id_men = id_men;
@@ -76,5 +95,16 @@ public class Mensaje {
         return leido;
     }
     
+    public String getFotoimgString() {
+        String image =null;
+        try {
+            byte[] imageBytes = this.fotoBlob.getBytes(1, (int) this.fotoBlob.length());
+            String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
+            image = "data:image/jpg;base64," + encodedImage;
+            
+        } catch (SQLException ex) {
+        }
+        return image;
+    }
     
 }

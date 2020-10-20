@@ -68,7 +68,7 @@ public class ConexionEstatica {
         } finally {
             try {
                 if (ConexionEstatica.Conj_Registros.next()) {
-                    existe = new User(Conj_Registros.getInt("id_us"), Conj_Registros.getString("email"), Conj_Registros.getString("pass"), Conj_Registros.getString("nombre"), Conj_Registros.getString("nick"), Conj_Registros.getString("apellidos"), Conj_Registros.getInt("edad"), Conj_Registros.getString("sexo"), Conj_Registros.getInt("rol"), Conj_Registros.getInt("validado"));
+                    existe = new User(Conj_Registros.getInt("id_us"), Conj_Registros.getString("email"), Conj_Registros.getString("pass"), Conj_Registros.getString("nombre"), Conj_Registros.getString("nick"), Conj_Registros.getString("apellidos"), Conj_Registros.getInt("edad"), Conj_Registros.getString("sexo"), Conj_Registros.getInt("rol"), Conj_Registros.getInt("validado"), Conj_Registros.getBytes("img"), Conj_Registros.getBlob("img"));
                 }
                 ps.close();
                 ConexionEstatica.cerrarBD();
@@ -79,21 +79,24 @@ public class ConexionEstatica {
         return existe;//Si devolvemos null el usuario no existe.
     }
 
-    public static String User_tiene_casa(int id) {
+    public static User User_tiene_casa(User u) {
         ConexionEstatica.nueva();
-        String tiene = "";
+        User us = null;
         try {
-            String sentencia = "SELECT * FROM casa_estudiante,casas WHERE casa_estudiante.id_us = '" + id + "' && casa_estudiante.id_int=casas.id_int ";
+            String sentencia = "SELECT * FROM casa_estudiante,casas WHERE casa_estudiante.id_us = '" + u.getId() + "' && casa_estudiante.id_int=casas.id_int ";
             ConexionEstatica.Conj_Registros = ConexionEstatica.Sentencia_SQL.executeQuery(sentencia);
             if (ConexionEstatica.Conj_Registros.next())//Si devuelve true es que existe.
             {
-                tiene = Conj_Registros.getString("nombre");
+                u.setCasa(Conj_Registros.getString("nombre"));
+                u.setFotoBlobCasa(Conj_Registros.getBlob("img"));
+                u.setFotoCasa(Conj_Registros.getBytes("img"));
+                us = u;
             }
             ConexionEstatica.cerrarBD();
         } catch (SQLException ex) {
             System.out.println("Error en el acceso a la BD.");
         }
-        return tiene;//Si devolvemos null el usuario no existe.
+        return us;//Si devolvemos null el usuario no existe.
     }
 
     /**
@@ -123,7 +126,6 @@ public class ConexionEstatica {
      * `contenido`, `fecha`, `leido`) VALUES (NULL, '8', '8', 'jajaxd', 'hola yo
      * soy tu morenito 19', '2020-10-19', '0');
      */
-
     /**
      * @param email
      * @return
@@ -132,7 +134,7 @@ public class ConexionEstatica {
         ConexionEstatica.nueva();
         LinkedList mensajesRE = new LinkedList<>();
         PreparedStatement ps = null;
-        String sql = "SELECT user.email AS 'recibido',mensajes.*,(SELECT user.email FROM user WHERE user.id_us=mensajes.id_env) as 'enviado',(SELECT user.nick FROM user WHERE user.id_us=mensajes.id_env) as 'enviado_nick' FROM user,mensajes where user.id_us = mensajes.id_rez && user.email = ?";
+        String sql = "SELECT user.email AS 'recibido',(SELECT user.img FROM user WHERE user.id_us=mensajes.id_env) AS 'img',mensajes.*,(SELECT user.email FROM user WHERE user.id_us=mensajes.id_env) as 'enviado',(SELECT user.nick FROM user WHERE user.id_us=mensajes.id_env) as 'enviado_nick' FROM user,mensajes where user.id_us = mensajes.id_rez && user.email = ?";
         try {
             ps = ConexionEstatica.Conex.prepareStatement(sql);
             ps.setString(1, email);
@@ -145,8 +147,8 @@ public class ConexionEstatica {
             try {
                 Mensaje p = null;
                 while (ConexionEstatica.Conj_Registros.next()) {
-                    
-                    p = new Mensaje(Conj_Registros.getInt("id_men"), Conj_Registros.getString("enviado"),Conj_Registros.getString("enviado_nick"), Conj_Registros.getString("recibido"), Conj_Registros.getString("asunto"), Conj_Registros.getString("contenido"), Conj_Registros.getString("fecha"), Conj_Registros.getInt("leido"));
+
+                    p = new Mensaje(Conj_Registros.getInt("id_men"), Conj_Registros.getString("enviado"), Conj_Registros.getString("enviado_nick"), Conj_Registros.getString("recibido"), Conj_Registros.getString("asunto"), Conj_Registros.getString("contenido"), Conj_Registros.getString("fecha"), Conj_Registros.getInt("leido"), Conj_Registros.getBytes("img"), Conj_Registros.getBlob("img"));
                     mensajesRE.add(p);
                 }
                 ps.close();
