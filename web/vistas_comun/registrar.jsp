@@ -24,10 +24,11 @@
         <div class="container h-100">
             <div class="col-sm-12 align-self-center text-center">
                 <div class="card-body ">
-                    <form name="for" action="../Controladores_comun/controlador.jsp" method="POST">
+                    <form name="for" action="../Controladores_comun/controlador.jsp" method="POST" enctype="multipart/form-data">
                         <fieldset>
                             <legend><h1>Registro</h1></legend>
                             <p>Nick <input type="text" name="nickname" placeholder="nick" value=""></p>
+                            <p>Foto de perfil: <input type="file" name="fichero"/></p>
                             <p>Email <input type="text" name="email" placeholder="email" value=""></p>
                             <p>Nombre <input type="text" name="nombre" placeholder="nombre" value="">
                                 <input type="text" name="apellido" placeholder="apellido" value=""></p>

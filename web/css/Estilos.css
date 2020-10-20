@@ -70,7 +70,7 @@ body{
     width: 100%;
 }
 .w-100px{
-    width: 600px;
+    width: 450px;
 }
 .w-2{
     width: 20%;
@@ -95,15 +95,32 @@ h4{
     margin-right: 10px !important;
 }
 .eye{
-    width: 40px;
+    width: 40px !important;
     font-size: 20px;
 }
 .w-50{
     width: 47%;
 }
-.fondogris{
-    background-color: dimgrey;
+.currentColor{
+    background-color: currentColor;
 }
-.fondoblanco{
+.fondowhite{
     background-color: white;    
+}
+.tablero-mensajes{
+    display: block;
+    max-height: 400px;
+    height: 400px;
+    overflow: auto;
+}
+.mini_foto{
+    width: 40px !important;
+    height: 40px !important;
+}
+td{
+    max-height: 57px !important;
+}
+tr{
+    max-height: 57px;
+    display: block;
 }

@@ -5,6 +5,10 @@
  */
 package Modelo;
 
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.Base64;
+
 /**
  *
  * @author daw205
@@ -22,6 +26,13 @@ public class User {
     private String sexo;
     private int rol;
     private int validado;
+    private byte[] foto;
+    private Blob fotoBlob;
+
+    public User() {
+        this.id=0;
+        this.email="";
+    }
 
     public User(int id, String email, String pass) {
         this.id = id;
@@ -88,6 +99,22 @@ public class User {
         this.rol = rol;
         this.validado = validado;
         this.casa="";
+    }
+
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
+    }
+
+    public Blob getFotoBlob() {
+        return fotoBlob;
+    }
+
+    public void setFotoBlob(Blob fotoBlob) {
+        this.fotoBlob = fotoBlob;
     }
 
     public String getNick() {
@@ -174,4 +201,15 @@ public class User {
         this.validado = validado;
     }
 
+    public String getFotoimgString() {
+        String image =null;
+        try {
+            byte[] imageBytes = this.fotoBlob.getBytes(1, (int) this.fotoBlob.length());
+            String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
+            image = "data:image/jpg;base64," + encodedImage;
+            
+        } catch (SQLException ex) {
+        }
+        return image;
+    }
 }

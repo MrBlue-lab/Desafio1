@@ -3,10 +3,18 @@
     Created on : 25 sept. 2020, 13:24:03
     Author     : daw205
 --%>
+<%@page import="java.util.List"%>
 <%@page import="Modelo.ConexionEstatica"%>
 <%@page pageEncoding="UTF-8"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="Modelo.User"%>
+<%@page import="java.io.File"%>
+<%@page import="java.io.InputStream"%>
+<%@page import="java.io.FileInputStream"%>
+<%@page import="org.apache.commons.fileupload.FileItem"%>
+<%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
+<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
+<%@page import="org.apache.commons.fileupload.FileItemFactory"%>
 <%
     //metodo para regresar en cualquier pagina
     if (request.getParameter("back") != null) {
@@ -31,6 +39,39 @@
         String sexo = request.getParameter("sexo");
         String aux = request.getParameter("edad");
         int edad = Integer.parseInt(aux);
+        
+            FileItemFactory factory = new DiskFileItemFactory();
+            ServletFileUpload upload = new ServletFileUpload(factory);
+
+            
+            List items = upload.parseRequest(request);
+            User p = new User();
+
+            for (Object item : items) {
+                FileItem uploaded = (FileItem) item;
+
+                if (!uploaded.isFormField()) {
+                    String rutaDestino = "perfiles/";
+                    File fichero = new File(rutaDestino, uploaded.getName()); //El archivo se guardará en 'glassfish5/glassfish/domains/domain1/config/perfiles'.
+                    uploaded.write(fichero);
+                    byte[] icono = new byte[(int) fichero.length()];
+                    InputStream input = new FileInputStream(fichero);
+                    input.read(icono);
+                    p.setFoto(icono);
+            
+                    out.println("Archivo '" + uploaded.getName() + "' subido correctamente.");
+                } else {
+                    String key = uploaded.getFieldName();
+                    String valor = uploaded.getString();
+                    out.println("Valor recuperado con uploaded: " + key + " = " + valor + "</br>");
+                   if (key.equals("nombre")){
+                       p.setNombre(valor);
+                   }
+                   if (key.equals("edad")){
+                       p.setEdad(Integer.parseInt(valor));
+                   }
+                }
+            }
         User u = new User(email, pass, nombre, nick, apellido, edad, sexo);
         ConexionEstatica.Insertar_User(u);
         response.sendRedirect("../index.jsp");

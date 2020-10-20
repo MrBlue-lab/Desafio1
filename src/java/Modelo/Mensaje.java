@@ -12,6 +12,7 @@ package Modelo;
 public class Mensaje {
     int id_men;
     String email_env;
+    String enviado_nick;
     String email_rez;
     String asunto;
     String contenido;
@@ -28,8 +29,23 @@ public class Mensaje {
         this.leido = leido;
     }
 
+    public Mensaje(int id_men, String email_env, String enviado_nick, String email_rez, String asunto, String contenido, String fecha, int leido) {
+        this.id_men = id_men;
+        this.email_env = email_env;
+        this.enviado_nick = enviado_nick;
+        this.email_rez = email_rez;
+        this.asunto = asunto;
+        this.contenido = contenido;
+        this.fecha = fecha;
+        this.leido = leido;
+    }
+
     public void setLeido(int leido) {
         this.leido = leido;
+    }
+
+    public String getEnviado_nick() {
+        return enviado_nick;
     }
 
     public int getId_men() {

@@ -132,7 +132,7 @@ public class ConexionEstatica {
         ConexionEstatica.nueva();
         LinkedList mensajesRE = new LinkedList<>();
         PreparedStatement ps = null;
-        String sql = "SELECT user.email AS 'recibido',mensajes.*,(SELECT user.email FROM user WHERE user.id_us=mensajes.id_env) as 'enviado' FROM user,mensajes where user.id_us = mensajes.id_rez && user.email = ?";
+        String sql = "SELECT user.email AS 'recibido',mensajes.*,(SELECT user.email FROM user WHERE user.id_us=mensajes.id_env) as 'enviado',(SELECT user.nick FROM user WHERE user.id_us=mensajes.id_env) as 'enviado_nick' FROM user,mensajes where user.id_us = mensajes.id_rez && user.email = ?";
         try {
             ps = ConexionEstatica.Conex.prepareStatement(sql);
             ps.setString(1, email);
@@ -146,7 +146,7 @@ public class ConexionEstatica {
                 Mensaje p = null;
                 while (ConexionEstatica.Conj_Registros.next()) {
                     
-                    p = new Mensaje(Conj_Registros.getInt("id_men"), Conj_Registros.getString("enviado"), Conj_Registros.getString("recibido"), Conj_Registros.getString("asunto"), Conj_Registros.getString("contenido"), Conj_Registros.getString("fecha"), Conj_Registros.getInt("leido"));
+                    p = new Mensaje(Conj_Registros.getInt("id_men"), Conj_Registros.getString("enviado"),Conj_Registros.getString("enviado_nick"), Conj_Registros.getString("recibido"), Conj_Registros.getString("asunto"), Conj_Registros.getString("contenido"), Conj_Registros.getString("fecha"), Conj_Registros.getInt("leido"));
                     mensajesRE.add(p);
                 }
                 ps.close();

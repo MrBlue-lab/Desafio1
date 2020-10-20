@@ -27,7 +27,6 @@
             }
             session.setAttribute("mensajes", ConexionEstatica.getMensajes(u.getEmail()));
             LinkedList mensajesRE = (LinkedList) session.getAttribute("mensajes");
-            Mensaje m = null;
         %> 
         <ul class="nav navbar-nav navbar-right nav-flex-icons">
             <li><a><div class="contenedor-modal"><button type="button" class="btn btn-info" data-toggle="modal" data-target="#miModal"><span class="glyphicon glyphicon-leaf"></span> Enviar</button></div></a></li>
@@ -35,21 +34,8 @@
                 <a class="nav-link dropdown-toggle email" id="navbarDropdownMenuLink-56" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="glyphicon glyphicon-envelope p-5"></span> <%=mensajesRE.size()%>
                 </a>
-                <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary w-100px overflow-auto" aria-labelledby="navbarDropdownMenuLink-56">
-                    <table class="table table-hover">
-                        <tbody>
-                        <%
-                            for (int i = 0; i < mensajesRE.size(); i++) {
-                                m = (Mensaje) mensajesRE.get(i);
-                        %>
-                        <tr>
-                            <td class="w-50">  <%= m.getEmail_env()%></td>
-                            <td class="w-50">  <%= m.getAsunto()%></td>
-                            <td class="eye"><a href="#"><span class="glyphicon glyphicon-eye-open"></span></a></td>
-                        </tr>
-                        <% }%>
-                        </tbody>
-                    </table>
+                <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary w-100px currentColor" aria-labelledby="navbarDropdownMenuLink-56">
+                    <jsp:include page="../Controladores_user/mensajes.jsp" />
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -59,6 +45,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary w-100px" aria-labelledby="navbarDropdownMenuLink-55">
                     <h3 class="text-center"> <%= u.getNick()%></h3>
+                    <div class="dropdown-divider"></div>
                     <a class="text-center"><form name="for" action="../Controladores_comun/controlador.jsp" method="POST"><input type="submit" class="btn btn-danger" value="cerrar sesion" name="back"></span></form></a>
                 </div>
             </li>
