@@ -3,6 +3,8 @@
     Created on : 25 sept. 2020, 13:24:03
     Author     : daw205
 --%>
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="Modelo.ConexionEstatica"%>
 <%@page pageEncoding="UTF-8"%>
@@ -63,8 +65,7 @@
          * String valor = uploaded.getString(); out.println("Valor recuperado
          * con uploaded: " + key + " = " + valor + "</br>"); if
          * (key.equals("nombre")){ p.setNombre(valor); } if
-         * (key.equals("edad")){ p.setEdad(Integer.parseInt(valor)); } }
-            }*
+         * (key.equals("edad")){ p.setEdad(Integer.parseInt(valor)); } } }*
          */
         User u = new User(email, pass, nombre, nick, apellido, edad, sexo);
         ConexionEstatica.Insertar_User(u);
@@ -99,6 +100,23 @@
         }
     }
 
+    //eleccion de usuario logueado
+    if (request.getParameter("enviar") != null) {
+        User u = (User) session.getAttribute("logueado");
+        if (!request.getParameter("para").equals(u.getEmail())) {
+            String para = request.getParameter("para");
+            String asunto = request.getParameter("asunto");
+            String cuerpo = request.getParameter("cuerpo");
+            Date dNow = new Date();
+            SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy");
+            String currentDate = ft.format(dNow);
+            Date d = ft.parse(currentDate);
+            java.sql.Date sqlDate = new java.sql.Date(d.getTime());
+            ConexionEstatica.EnviarMensaje(u.getId(), para, asunto, cuerpo, sqlDate);
+        }
+        response.sendRedirect("../vistas_user/home.jsp");
+    }
+    
     //eleccion de usuario logueado primera vez
     if (request.getParameter("preferencias") != null) {
         int casa = 0;
@@ -119,7 +137,7 @@
 
         User u = (User) session.getAttribute("logueado");
         ConexionEstatica.sombrero_seleccionador(sombrero, u.getId(), casa);
-        u=ConexionEstatica.User_tiene_casa(u);
+        u = ConexionEstatica.User_tiene_casa(u);
         session.setAttribute("logueado", u);
         response.sendRedirect("../vistas_comun/eleccion.jsp");
     }

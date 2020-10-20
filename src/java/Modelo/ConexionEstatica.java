@@ -275,4 +275,29 @@ public class ConexionEstatica {
             }
         }
     }
+    public static void EnviarMensaje(int id,String para,String asunto,String cuerpo,Date fecha){
+        ConexionEstatica.nueva();
+        String sql = "INSERT INTO mensajes VALUES (null,?,(select id_us from user where email=?),?,?,?,0)";
+        PreparedStatement ps = null;
+        try {
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.setString(2, para);
+            ps.setString(3, asunto);
+            ps.setString(4, cuerpo);
+            ps.setDate(5,  fecha);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
+        }
+    }
 }

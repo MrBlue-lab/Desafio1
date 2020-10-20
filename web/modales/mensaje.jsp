@@ -12,8 +12,8 @@
                 <h3 class="modal-title" id="myModalLabel">Mensaje nuevo</h3>
             </div>
             <div class="modal-body">
-                <form name="for" action="controlador.jsp" method="POST">
-                    <p><input type="email" name="correo" class="w-100" placeholder="Para"></p>
+                <form name="for" action="../Controladores_comun/controlador.jsp" method="POST">
+                    <p><input type="email" name="para" class="w-100" placeholder="Para"></p>
                     <p><input type="text" name="asunto" class="w-100" placeholder="Asunto"></p>
                     <textarea name="cuerpo" rows="10" class="w-100" placeholder="Cuerpo"></textarea><br>
                     <input class="btn btn-info" type="submit" name="enviar" value="Enviar">
