@@ -49,7 +49,7 @@
                         <h4>Asunto: <%= m.getAsunto()%></h4>
                     </div>
                     <div class="media-right">
-                        <h4><small><i><%=m.getFecha() %></i></small></h4>
+                        <h4><small><i><%=m.getFecha()%></i></small></h4>
                     </div>
                 </div>
             </div>
@@ -62,3 +62,54 @@
 <%
     }
 %>
+<div class="modal fade" id="modUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title" id="myModalLabel">Modificar usuario <small><i><%= us.getEmail()%></i></small></h3>
+            </div>
+            <div class="modal-body">
+                <form name="for" action="../Controladores_comun/controlador.jsp" method="POST">
+                    <p>Nick <input type="text" name="nickname" placeholder="nick" value="<%= us.getNick()%>"></p>
+                    <p>Foto de perfil </p>
+                    <%if (us.getFotoBlob() != null) {%>
+                    <img src='<%=us.getFotoimgString()%>' width="70" alt='Foto de perfil no encontrada'>
+                    <%} else {%>
+                    <img src='../css/img/user1.jpg' width="70" alt='Foto de perfil no encontrada'>
+                    <%
+                        }
+                    %>
+                    <br><br>
+                    <input type="file" name="fichero"/></br>
+                    <p>Nombre <input type="text" name="nombre" placeholder="nombre" value="<%= us.getNombre()%>">
+                        <input type="text" name="apellido" placeholder="apellido" value="<%= us.getApellidos()%>"></p>
+                    <p>Contaseña <input type="password" name="pass" placeholder="contraseña" value="<%= us.getPass()%>"></p>
+                    <p>Repetir contaseña <input type="password" name="pass2" placeholder="contraseña" value="<%= us.getPass()%>"></p>
+                    <p>Edad <input type="number" name="edad" value="<%= us.getEdad() %>"  max="100" min="0" ></p>
+                    <br/>
+                    <p>Sexo<br>
+                        <% if (us.getSexo().equals("mujer")) {
+                        %>
+                        <input type="Radio" name="sexo" value="mujer"checked>Mujer
+                        <input type="Radio" name="sexo" value="hombre">Hombre
+                        <%
+                        } else {
+                        %>
+                        <input type="Radio" name="sexo" value="mujer">Mujer
+                        <input type="Radio" name="sexo" value="hombre"checked>Hombre
+                        <%
+                            }
+                        %>
+                    </p>
+                    <input class="btn btn-primary" type="submit" name="editar_user" value="Aceptar">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">Cancelar</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -44,13 +44,16 @@
                     //Este directorio, por seguridad, luego no será accesible.
                     String rutaDestino = "perfiles/";
                     File fichero = new File(rutaDestino, uploaded.getName()); //El archivo se guardará en 'glassfish5/glassfish/domains/domain1/config/perfiles'.
+                    try{
                     uploaded.write(fichero);
+                    }catch(Exception ex){
+                        out.println(ex);
+                    }
                     //Pasamos a binario la imagen para almacenarla en MySQL en el campo BLOB.
                     byte[] icono = new byte[(int) fichero.length()];
                     InputStream input = new FileInputStream(fichero);
                     input.read(icono);
                     p.setFoto(icono);
-            
                     out.println("Archivo '" + uploaded.getName() + "' subido correctamente.");
                 } else {//Si es un campo de formulario (no fichero) extraemos su valor de la siguiente manera.
                     /*
