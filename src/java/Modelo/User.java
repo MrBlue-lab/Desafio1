@@ -16,7 +16,7 @@ import java.util.Base64;
 public class User {
 
     private final int id;
-    private final String email;
+    private String email;
     private String casa;
     private String pass;
     private String nombre;
@@ -36,10 +36,11 @@ public class User {
         this.email="";
     }
 
-    public User(int id, String email, String casa, String nombre, String nick, String apellidos, int edad, String sexo, int rol, int validado, byte[] foto, Blob fotoBlob) {
+
+    public User(int id, String email, String pass, String nombre, String nick, String apellidos, int edad, String sexo, int rol, int validado, byte[] foto, Blob fotoBlob) {
         this.id = id;
+        this.casa = "";
         this.email = email;
-        this.casa = casa;
         this.pass = pass;
         this.nombre = nombre;
         this.nick = nick;
@@ -117,6 +118,10 @@ public class User {
         this.rol = rol;
         this.validado = validado;
         this.casa="";
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public byte[] getFoto() {

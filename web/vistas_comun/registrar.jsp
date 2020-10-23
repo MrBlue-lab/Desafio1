@@ -26,11 +26,11 @@
                     <form name="for" action="../Controladores_user/subefichero.jsp" enctype="multipart/form-data" method="post">
                         <fieldset>
                             <legend><h1>Registro</h1></legend>
-                            <p>Nick <input type="text" name="nickname" placeholder="nick" value=""></p>
+                            <p>Nick <input type="text" name="nickname" placeholder="nick" value="" required=""></p>
                             <p>Foto de perfil: <input type="file" name="fichero"/></br> 
-                            <p>Email <input type="email" name="email" placeholder="email" value=""></p>
+                            <p>Email <input type="email" name="email" placeholder="email" value="" required=""></p>
                             <p>Nombre <input type="text" name="nombre" placeholder="nombre" value="">
-                                <input type="text" name="apellido" placeholder="apellido" value=""></p>
+                                <input type="text" name="apellido" placeholder="apellido" value="" required=""></p>
                             <p>Contaseña <input type="password" name="pass" placeholder="email" value=""></p>
                             <p>Repetir contaseña <input type="password" name="pass2" placeholder="email" value=""></p>
 
@@ -48,5 +48,6 @@
             </div>
         </div>
 
+        <jsp:include page="../presentacion/footer.jsp" />
     </body>
 </html>

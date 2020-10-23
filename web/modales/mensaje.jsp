@@ -12,11 +12,12 @@
                 <h3 class="modal-title" id="myModalLabel">Mensaje nuevo</h3>
             </div>
             <div class="modal-body">
-                <form name="for" action="../Controladores_comun/controlador.jsp" method="POST">
+                <form name="for" enctype="multipart/form-data" action="../Controladores_user/subeemail.jsp" method="POST">
                     <p><input type="email" name="para" class="w-100" placeholder="Para" required=""></p>
                     <p><input type="text" name="asunto" class="w-100" placeholder="Asunto" required=""></p>
                     <textarea name="cuerpo" rows="10" class="w-100" placeholder="Cuerpo"></textarea><br>
                     <input class="btn btn-info" type="submit" name="enviar" value="Enviar">
+                    <input type="file" name="fichero"/>
                 </form>
             </div>
         </div>
@@ -55,7 +56,17 @@
             </div>
             <div class="modal-body">
                 <h4><%= m.getContenido()%></h4>
+                <%
+                    if (!m.getDir().equals("")) {
+                %>
+                <div>
+                    <a href="../perfiles/<%= m.getDir()%>" download="<%= m.getDir()%>">Download</a>
+                </div>
+                <%
+                    }
+                %>
             </div>
+
         </div>
     </div>
 </div>
@@ -72,7 +83,7 @@
                 <h3 class="modal-title" id="myModalLabel">Modificar usuario <small><i><%= us.getEmail()%></i></small></h3>
             </div>
             <div class="modal-body">
-                <form name="for" action="../Controladores_comun/controlador.jsp" method="POST">
+                <form name="for" action="../Controladores_user/subefichero.jsp" enctype="multipart/form-data" method="post">
                     <p>Nick <input type="text" name="nickname" placeholder="nick" value="<%= us.getNick()%>"></p>
                     <p>Foto de perfil </p>
                     <%if (us.getFotoBlob() != null) {%>
@@ -83,12 +94,12 @@
                         }
                     %>
                     <br><br>
-                    <input type="file" name="fichero"/></br>
+                    <input type="file" name="fichero" value=""/></br>
                     <p>Nombre <input type="text" name="nombre" placeholder="nombre" value="<%= us.getNombre()%>">
                         <input type="text" name="apellido" placeholder="apellido" value="<%= us.getApellidos()%>"></p>
-                    <p>Contaseña <input type="password" name="pass" placeholder="contraseña" value="<%= us.getPass()%>"></p>
+                    <p>Nueva contaseña <input type="password" name="pass" placeholder="contraseña" value="<%= us.getPass()%>"></p>
                     <p>Repetir contaseña <input type="password" name="pass2" placeholder="contraseña" value="<%= us.getPass()%>"></p>
-                    <p>Edad <input type="number" name="edad" value="<%= us.getEdad() %>"  max="100" min="0" ></p>
+                    <p>Edad <input type="number" name="edad" value="<%= us.getEdad()%>"  max="100" min="0" ></p>
                     <br/>
                     <p>Sexo<br>
                         <% if (us.getSexo().equals("mujer")) {

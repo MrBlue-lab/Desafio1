@@ -59,7 +59,7 @@
                             }
                         %> 
                     </ul> 
-                    <form name="for" action="../vistas_comun/eleccion.jsp" method="POST">
+                    <form name="for" action="../vistas_comun/eleccion.jsp" method="POST" style="margin-bottom: 100px">
                         <input type="submit" name="back" value="Back">
                     </form> 
                 </div>

@@ -27,5 +27,6 @@
             //response.sendRedirect("index.jsp");
         %>
         <a href="index.jsp">loguin</a>
+        <jsp:include page="../presentacion/footer.jsp" />
     </body>
 </html>

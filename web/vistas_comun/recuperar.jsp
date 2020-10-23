@@ -17,4 +17,5 @@
             <input class="botones" type="submit" value="Recuperar contraseña">
         </form>
     </body>
+        <jsp:include page="../presentacion/footer.jsp" />
 </html>

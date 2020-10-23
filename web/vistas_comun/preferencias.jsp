@@ -40,7 +40,7 @@
                                         </p>
                                     </fieldset>
                                     <fieldset>
-                                        <legend>Siestudiases en howarts... /n
+                                        <legend>Si estudiases en howarts... 
                                             ¿Donde preferirias que estuviese tu dormitorio?</legend>
                                         <p><br>
                                             <input type="Radio" name="1" value="10">En las mazmorras<br>
@@ -130,5 +130,6 @@
                 </div>
             </div>
         </div>  
+        <jsp:include page="../presentacion/footer.jsp" />
     </body>
 </html>

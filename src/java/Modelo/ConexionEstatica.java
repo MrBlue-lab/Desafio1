@@ -68,7 +68,7 @@ public class ConexionEstatica {
         } finally {
             try {
                 if (ConexionEstatica.Conj_Registros.next()) {
-                    existe = new User(Conj_Registros.getInt("id_us"), Conj_Registros.getString("email"), Conj_Registros.getString("pass"), Conj_Registros.getString("nombre"), Conj_Registros.getString("nick"), Conj_Registros.getString("apellidos"), Conj_Registros.getInt("edad"), Conj_Registros.getString("sexo"), Conj_Registros.getInt("rol"), Conj_Registros.getInt("validado"), Conj_Registros.getBytes("img"), Conj_Registros.getBlob("img"));
+                    existe = new User(Conj_Registros.getInt("id_us"), email, pass, Conj_Registros.getString("nombre"), Conj_Registros.getString("nick"), Conj_Registros.getString("apellidos"), Conj_Registros.getInt("edad"), Conj_Registros.getString("sexo"), Conj_Registros.getInt("rol"), Conj_Registros.getInt("validado"), Conj_Registros.getBytes("img"), Conj_Registros.getBlob("img"));
                 }
                 ps.close();
                 ConexionEstatica.cerrarBD();
@@ -166,7 +166,6 @@ public class ConexionEstatica {
         User p;
         for (int i = 0; i < usuarios_online.size(); i++) {
             p = (User) usuarios_online.get(i);
-
             String sql = "SELECT DISTINCT * from user,casa_estudiante where casa_estudiante.id_int=(SELECT id_int FROM casa_estudiante WHERE id_us=?) && casa_estudiante.id_us=user.id_us && user.id_us != ? && user.id_us not IN (SELECT user.id_us FROM user,amigos WHERE (amigos.id_us=?) || (amigos.id_amigo = ?)) ";
             try {
                 ps = ConexionEstatica.Conex.prepareStatement(sql);
@@ -194,6 +193,74 @@ public class ConexionEstatica {
         return cont;
     }
 
+    public static LinkedList getAmigos2(int id) {
+        LinkedList list = new LinkedList();
+        ConexionEstatica.nueva();
+        PreparedStatement ps = null;
+        int cont = 0;
+        User p;
+        String sql = "SELECT * from user WHERE user.id_us=(SELECT id_us from amistad where id_amigo = ?) OR user.id_us=(SELECT id_us from amistad where id_us = ?);";
+        try {
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.setInt(2, id);
+            ConexionEstatica.Conj_Registros = ps.executeQuery();
+        } catch (SQLException ex) {
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                while (ConexionEstatica.Conj_Registros.next()) {
+                    p = new User(Conj_Registros.getInt("id_us"), Conj_Registros.getString("email"), Conj_Registros.getString("pass"), Conj_Registros.getString("nombre"), Conj_Registros.getString("nick"), Conj_Registros.getString("apellidos"), Conj_Registros.getInt("edad"), Conj_Registros.getString("sexo"), Conj_Registros.getInt("rol"), Conj_Registros.getInt("validado"), Conj_Registros.getBytes("img"), Conj_Registros.getBlob("img"));
+                    list.add(p);
+                }
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
+        }
+        return list;
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    public static LinkedList getNotificaciones(int id) {
+        ConexionEstatica.nueva();
+        LinkedList mensajesRE = new LinkedList<>();
+        PreparedStatement ps = null;
+        String sql = "SELECT * from user,amigos where (amigos.id_us = user.id_us && amigos.id_amigo = ?) && user.id_us != ?;";
+        try {
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.setInt(2, id);
+            ConexionEstatica.Conj_Registros = ps.executeQuery();
+        } catch (SQLException ex) {
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                Notificacion p;
+                int cont = 0;
+                while (ConexionEstatica.Conj_Registros.next()) {
+
+                    p = new Notificacion(cont, Conj_Registros.getString("nick"), Conj_Registros.getString("email"), Conj_Registros.getBytes("img"), Conj_Registros.getBlob("img"));
+                    mensajesRE.add(p);
+                    cont++;
+                }
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
+        }
+        return mensajesRE;
+    }
+
     /**
      * @param email
      * @return
@@ -213,10 +280,11 @@ public class ConexionEstatica {
             System.out.println("Error general: " + ex.getMessage());
         } finally {
             try {
-                Mensaje p = null;
+                Mensaje p;
                 while (ConexionEstatica.Conj_Registros.next()) {
 
                     p = new Mensaje(Conj_Registros.getInt("id_men"), Conj_Registros.getString("enviado"), Conj_Registros.getString("enviado_nick"), Conj_Registros.getString("recibido"), Conj_Registros.getString("asunto"), Conj_Registros.getString("contenido"), Conj_Registros.getString("fecha"), Conj_Registros.getInt("leido"), Conj_Registros.getBytes("img"), Conj_Registros.getBlob("img"));
+                    p.setDir(Conj_Registros.getString("archivo"));
                     mensajesRE.add(p);
                 }
                 ps.close();
@@ -228,10 +296,9 @@ public class ConexionEstatica {
         return mensajesRE;
     }
 
-    
     public static String getInfo(String casa) {
         ConexionEstatica.nueva();
-        String info =null;
+        String info = null;
         PreparedStatement ps = null;
         String sql = "SELECT descripcion FROM casas where nombre = ?";
         try {
@@ -244,9 +311,8 @@ public class ConexionEstatica {
             System.out.println("Error general: " + ex.getMessage());
         } finally {
             try {
-                Mensaje p = null;
                 while (ConexionEstatica.Conj_Registros.next()) {
-                    info= Conj_Registros.getString("descripcion");
+                    info = Conj_Registros.getString("descripcion");
                 }
                 ps.close();
                 ConexionEstatica.cerrarBD();
@@ -256,11 +322,16 @@ public class ConexionEstatica {
         }
         return info;
     }
-    
+
     /**
      * @param email
      * @param nombre
+     * @param nick
      * @param apellido
+     * @param edad
+     * @param sexo
+     * @param rol
+     * @param validado
      * @throws java.sql.SQLException
      */
     //---------------------------------------------------------- public
@@ -294,13 +365,47 @@ public class ConexionEstatica {
     }
 
     /**
+     * @param user
+     * @throws java.sql.SQLException
+     */
+    //---------------------------------------------------------- public
+    public static void Modificar_User(User user) throws SQLException {
+        ConexionEstatica.nueva();
+        String sql = "UPDATE `user` SET `nick` = ?, `nombre` = ?, `apellidos` = ?, `edad` = ?, `sexo` = ?, `pass` = ?, `img` = ? WHERE `email` = ?";
+        PreparedStatement ps = null;
+        try {
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setString(1, user.getNick());
+            ps.setString(2, user.getNombre());
+            ps.setString(3, user.getApellidos());
+            ps.setInt(4, user.getEdad());
+            ps.setString(5, user.getSexo());
+            ps.setString(6, user.getPass());
+            ps.setBytes(7, user.getFoto());
+            ps.setString(8, user.getEmail());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
+        }
+    }
+
+    /**
      * @param u
      * @throws java.sql.SQLException
      */
     //----------------------------------------------------------
     public static void Insertar_User(User u) throws SQLException {
         ConexionEstatica.nueva();
-        String sql = "INSERT INTO `user` (`id_us`, `email`, `nick`, `pass`, `nombre`, `apellidos`, `edad`, `sexo`, `img`, `rol`, `validado`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, '1', '0');";
+        String sql = "INSERT INTO `user` (`id_us`, `email`, `nick`, `pass`, `nombre`, `apellidos`, `edad`, `sexo`, `img`, `rol`, `validado`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, '1', '0');";
         PreparedStatement ps = null;
         try {
             ps = ConexionEstatica.Conex.prepareStatement(sql);
@@ -311,6 +416,7 @@ public class ConexionEstatica {
             ps.setString(5, u.getApellidos());
             ps.setInt(6, u.getEdad());
             ps.setString(7, u.getSexo());
+            ps.setBytes(8, u.getFoto());
             ps.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("Error de SQL: " + ex.getMessage());
@@ -373,9 +479,9 @@ public class ConexionEstatica {
         }
     }
 
-    public static void EnviarMensaje(int id, String para, String asunto, String cuerpo, Date fecha) {
+    public static void EnviarMensaje(int id, String para, String asunto, String cuerpo, Date fecha, String dir) {
         ConexionEstatica.nueva();
-        String sql = "INSERT INTO mensajes VALUES (null,?,(select id_us from user where email=?),?,?,?,0)";
+        String sql = "INSERT INTO mensajes VALUES (null,?,(select id_us from user where email=?),?,?,?,0,?)";
         PreparedStatement ps = null;
         try {
             ps = ConexionEstatica.Conex.prepareStatement(sql);
@@ -384,6 +490,7 @@ public class ConexionEstatica {
             ps.setString(3, asunto);
             ps.setString(4, cuerpo);
             ps.setDate(5, fecha);
+            ps.setString(6, dir);
             ps.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("Error de SQL: " + ex.getMessage());
@@ -398,11 +505,57 @@ public class ConexionEstatica {
             }
         }
     }
-    
-    
-    public static void agregarAmigo(int id,String email) throws SQLException {
+
+    public static void agregarAmigo(int id, String email) throws SQLException {
         ConexionEstatica.nueva();
         String sql = "INSERT INTO `amigos` (`id_us`, `id_amigo`) VALUES (?, (SELECT id_us FROM user where email=?));";
+        PreparedStatement ps = null;
+        try {
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.setString(2, email);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
+        }
+    }
+
+    public static void aceptarAmigo(int id, String email) throws SQLException {
+        ConexionEstatica.nueva();
+        String sql = "INSERT INTO `amistad` (`id_us`, `id_amigo`) VALUES (?, (SELECT id_us FROM user where email=?));";
+        PreparedStatement ps = null;
+        try {
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setString(2, email);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
+        }
+    }
+
+    //----------------------------------------------------------
+    public static void rechazarAmigo(int id, String email) throws SQLException {
+        ConexionEstatica.nueva();
+        String sql = "DELETE FROM `amigos` WHERE id_us = (select id_us from user where email = ?) AND (id_amigo = ?);";
         PreparedStatement ps = null;
         try {
             ps = ConexionEstatica.Conex.prepareStatement(sql);

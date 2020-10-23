@@ -5,54 +5,47 @@
 --%>
 
 <%@page import="Modelo.ConexionEstatica"%>
-<%@page import="java.io.InputStream"%>
-<%@page import="java.io.FileInputStream"%>
+<%@page import="Modelo.Mensaje"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
 <%@page import="Modelo.User"%>
+<%@page import="Auxiliar.Constantes"%>
 <%@page import="java.io.File"%>
-<%@page import="java.util.List"%>
 <%@page import="org.apache.commons.fileupload.FileItem"%>
+<%@page import="java.util.List"%>
 <%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
 <%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
 <%@page import="org.apache.commons.fileupload.FileItemFactory"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
+    Mensaje p = new Mensaje();
     FileItemFactory factory = new DiskFileItemFactory();
     ServletFileUpload upload = new ServletFileUpload(factory);
-
+    String dir = " ";
     // 'request' es la HttpServletRequest que recibimos del formulario.
     // Los items obtenidos serán cada uno de los campos del formulario,
     // tanto campos normales como ficheros subidos.
     List items = upload.parseRequest(request);
-    User p = new User();
-    boolean registro = false;
 
     // Se recorren todos los items, que son de tipo FileItem
     for (Object item : items) {
         FileItem uploaded = (FileItem) item;
+
         // Hay que comprobar si es un campo de formulario. Si no lo es, se guarda el fichero
         // subido donde nos interese.
         if (!uploaded.isFormField()) {
             // Es un campo fichero: guardamos el fichero en alguna carpeta (en este caso perfiles).
             //Si lo ponemos como sigue: el archivo se guardará en 'glassfish5/glassfish/domains/domain1/config/perfiles'.
-            //Este directorio, por seguridad, luego no será accesible.
-            String rutaDestino = "perfiles/";
-            File fichero = new File(rutaDestino, uploaded.getName()); //El archivo se guardará en 'glassfish5/glassfish/domains/domain1/config/perfiles'.
-            try {
-                uploaded.write(fichero);
-                //Pasamos a binario la imagen para almacenarla en MySQL en el campo BLOB.
-                byte[] icono = new byte[(int) fichero.length()];
-                InputStream input = new FileInputStream(fichero);
-                input.read(icono);
-                p.setFoto(icono);
-                out.println("Archivo '" + uploaded.getName() + "' subido correctamente.");
-            } catch (Exception ex) {
-                if (session.getAttribute("logueado") != null) {
-                    User us = (User) session.getAttribute("logueado");
-                    p.setFoto(us.getFoto());
-                    p.setEmail(us.getEmail());
-                }
-            }
+            //File fichero = new File("perfiles", uploaded.getName()); 
+            //Este directorio anterior, por seguridad, luego no será accesible.
+
+            //Cambiamos la ruta de destino a:
+            //String rutaDestino = "/home/fernando/NetBeansProjects/DAW2_19_20/SubirArchivos/web/perfiles";
+            File fichero = new File(Constantes.rutaServidor, uploaded.getName()); //El archivo se guardará en 'glassfish5/glassfish/domains/domain1/config/perfiles'.
+            uploaded.write(fichero);
+            dir=uploaded.getName();
+            out.println("Archivo '" + uploaded.getName() + "' subido correctamente.");
         } else {//Si es un campo de formulario (no fichero) extraemos su valor de la siguiente manera.
             /*
             Como el formulario debe ser enctype="multipart/form-data" para que admita el envío del fichero. 
@@ -64,37 +57,28 @@
             String key = uploaded.getFieldName();
             String valor = uploaded.getString();
             out.println("Valor recuperado con uploaded: " + key + " = " + valor + "</br>");
-            if (key.equals("nombre")) {
-                p.setNombre(valor);
+            //--> Vemos que la siguiente línea devolverá null por el tipo de enctype del formulario (necesario para sublir ficheros).
+            out.println("Valor recuperado directamente del request: " + request.getParameter(key) + "</br>");
+            if (key.equals("para")) {
+                String sal = valor;
+                p.setEmail_env(valor);
             }
-            if (key.equals("nickname")) {
-                p.setNick(valor);
+            if (key.equals("asunto")) {
+                p.setAsunto(valor);
             }
-            if (key.equals("pass")) {
-                p.setPass(valor);
-            }
-            if (key.equals("email")) {
-                p.setEmail(valor);
-            }
-            if (key.equals("edad")) {
-                p.setEdad(Integer.parseInt(valor));
-            }
-            if (key.equals("apellido")) {
-                p.setApellidos(valor);
-            }
-            if (key.equals("sexo")) {
-                p.setSexo(valor);
-            }
-            if (key.equals("registro")) {
-                registro = true;
+            if (key.equals("cuerpo")) {
+                p.setContenido(valor);
             }
         }
     }
-    if (registro) {
-        ConexionEstatica.Insertar_User(p);
-        response.sendRedirect("../index.jsp");
-    } else {
-        ConexionEstatica.Modificar_User(p);
-        response.sendRedirect("../vistas_user/home.jsp");
-    }
+    Date dNow = new Date();
+    SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy");
+    String currentDate = ft.format(dNow);
+    Date d = ft.parse(currentDate);
+    java.sql.Date sqlDate = new java.sql.Date(d.getTime());
+    User u = (User) session.getAttribute("logueado");
+    ConexionEstatica.EnviarMensaje(u.getId(), p.getEmail_env(), p.getAsunto(), p.getContenido(), sqlDate,dir);
+    response.sendRedirect("../vistas_user/home.jsp");
+
+
 %>

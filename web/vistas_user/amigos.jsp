@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../presentacion/elementos.jsp" />
-        <title>Home</title>
+        <title>Amigos</title>
     </head>
     <body>
         <jsp:include page="../presentacion/header.jsp" />
@@ -22,7 +22,7 @@
                 <div class="card-head ">
                     <%
                         User u = (User) session.getAttribute("logueado");
-                        LinkedList c = ConexionEstatica.getPosiblesAmigos(u.getId());
+                        LinkedList c = ConexionEstatica.getAmigos2(u.getId());
                         User aux_amig = null;
                     %>
                     <h3><%if (u.getFotoBlobCasa() != null) {%>
@@ -32,7 +32,7 @@
                         <%
                             }
                         %>
-                        Alumnos de <%=u.getCasa()%></h3>
+                        Amigos</h3>
                 </div>
                 <div class="card-body m-5 col-sm-12">     
                     <%

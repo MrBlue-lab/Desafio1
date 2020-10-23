@@ -22,7 +22,7 @@
                     <li><a href="../vistas_user/casa.jsp"><h4>Alumnos de <%=u.getCasa()%></h4></a></li>
                 </ul>
             </li>
-            <li><a href="#">
+            <li><a href="../vistas_user/amigos.jsp">
                     <%cont_amigos = ConexionEstatica.getAmigos((LinkedList) application.getAttribute("usuarios_online"), u.getId());%>
                     <h4>Amigos <%=cont_amigos%></h4>
                 </a>
@@ -45,6 +45,14 @@
             LinkedList mensajesRE = (LinkedList) session.getAttribute("mensajes");
         %> 
         <ul class="nav navbar-nav navbar-right nav-flex-icons">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle email" id="navbarDropdownMenuLink-53" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-bell  p-5"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary w-100px currentColor" aria-labelledby="navbarDropdownMenuLink-53">
+                    <jsp:include page="../modales/notificaciones.jsp" />
+                </div>
+            </li>
             <li><a><div class="contenedor-modal"><button type="button" class="btn btn-info" data-toggle="modal" data-target="#miModal"><span class="glyphicon glyphicon-leaf"></span> Enviar</button></div></a></li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle email" id="navbarDropdownMenuLink-56" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -70,14 +78,13 @@
                 <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary w-100px" aria-labelledby="navbarDropdownMenuLink-55">
                     <h3 class="text-center"> <%= u.getNick()%></h3>
                     <h3 class="text-center"> <%= u.getNombre() + " " + u.getApellidos()%></h3>
-                    <h3 class="text-center"> <%= " " + u.getSexo() + " " + u.getEdad() %></h3>
+                    <h3 class="text-center"> <%= " " + u.getSexo() + " " + u.getEdad()%></h3>
                     <div class="dropdown-divider"></div>
-                    <a><div class="contenedor-modal"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modUser"><span class="glyphicon glyphicon-leaf"></span> Editar</button></div></a>
-                    <a class="text-center"><form name="for" action="../Controladores_comun/controlador.jsp" method="POST"><input type="submit" class="btn btn-danger" value="cerrar sesion" name="back"></span></form></a>
+                    <a><div class="contenedor-modal"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modUser"><span class="glyphicon glyphicon-pencil"></span> Editar</button></div></a>
+                    <a class="text-center"><form name="for" action="../Controladores_comun/controlador.jsp" method="POST"><input type="submit" class="btn btn-danger" value="cerrar sesion" name="back"></form></a>
                 </div>
             </li>
         </ul>
-
     </div>
 </nav>
 <jsp:include page="../modales/mensaje.jsp" />

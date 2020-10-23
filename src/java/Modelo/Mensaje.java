@@ -24,6 +24,10 @@ public class Mensaje {
     int leido;
     private byte[] foto;
     private Blob fotoBlob;
+    String dir;
+
+    public Mensaje() {
+    }
 
     public Mensaje(int id_men, String email_env, String enviado_nick, String email_rez, String asunto, String contenido, String fecha, int leido, byte[] foto, Blob fotoBlob) {
         this.id_men = id_men;
@@ -57,6 +61,42 @@ public class Mensaje {
         this.contenido = contenido;
         this.fecha = fecha;
         this.leido = leido;
+    }
+
+    public String getDir() {
+        return dir;
+    }
+
+    public void setDir(String dir) {
+        this.dir = dir;
+    }
+
+    public void setId_men(int id_men) {
+        this.id_men = id_men;
+    }
+
+    public void setEmail_env(String email_env) {
+        this.email_env = email_env;
+    }
+
+    public void setEnviado_nick(String enviado_nick) {
+        this.enviado_nick = enviado_nick;
+    }
+
+    public void setEmail_rez(String email_rez) {
+        this.email_rez = email_rez;
+    }
+
+    public void setAsunto(String asunto) {
+        this.asunto = asunto;
+    }
+
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
     public byte[] getFoto() {

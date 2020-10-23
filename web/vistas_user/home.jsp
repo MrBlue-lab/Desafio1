@@ -34,6 +34,7 @@
                             %>
                             <%=u.getNick()%></h1></legend>
                     <h3><%= u.getEmail()%></h3>
+                    <h3><%= u.getPass() %></h3>
                     <h3><%=u.getNombre()%> <%=u.getApellidos()%></h3>
                 </div>
             </div>
