@@ -131,13 +131,14 @@ public class ConexionEstatica {
         LinkedList personasBD = new LinkedList<>();
         User p = null;
         PreparedStatement ps = null;
-        String sql = "SELECT DISTINCT * from user,casa_estudiante where casa_estudiante.id_int=(SELECT id_int FROM casa_estudiante WHERE id_us=?) && casa_estudiante.id_us=user.id_us && user.id_us != ? && (select user.id_us FROM user,amigos where amigos.id_us=? || amigos.id_amigo=?)";
+        String sql = "SELECT DISTINCT user.*,casa_estudiante.valoracion from user,casa_estudiante where casa_estudiante.id_int=(SELECT id_int FROM casa_estudiante WHERE id_us=?) && casa_estudiante.id_us=user.id_us && user.id_us != ? && user.id_us Not IN (SELECT user.id_us FROM user,amigos WHERE (amigos.id_us =? && amigos.id_amigo=user.id_us) || (amigos.id_amigo = ? && amigos.id_us = user.id_us)) ORDER BY (select casa_estudiante.valoracion FROM user,casa_estudiante where user.id_us = casa_estudiante.id_us && user.id_us=?) ";
         try {
             ps = ConexionEstatica.Conex.prepareStatement(sql);
             ps.setInt(1, id);
             ps.setInt(2, id);
             ps.setInt(3, id);
             ps.setInt(4, id);
+            ps.setInt(5, id);
             ConexionEstatica.Conj_Registros = ps.executeQuery();
         } catch (SQLException ex) {
             System.out.println("Error de SQL: " + ex.getMessage());
@@ -194,11 +195,6 @@ public class ConexionEstatica {
     }
 
     /**
-     * INSERT INTO `mensajes` (`id_men`, `id_env`, `id_rez`, `asunto`,
-     * `contenido`, `fecha`, `leido`) VALUES (NULL, '8', '8', 'jajaxd', 'hola yo
-     * soy tu morenito 19', '2020-10-19', '0');
-     */
-    /**
      * @param email
      * @return
      */
@@ -232,6 +228,35 @@ public class ConexionEstatica {
         return mensajesRE;
     }
 
+    
+    public static String getInfo(String casa) {
+        ConexionEstatica.nueva();
+        String info =null;
+        PreparedStatement ps = null;
+        String sql = "SELECT descripcion FROM casas where nombre = ?";
+        try {
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setString(1, casa);
+            ConexionEstatica.Conj_Registros = ps.executeQuery();
+        } catch (SQLException ex) {
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                Mensaje p = null;
+                while (ConexionEstatica.Conj_Registros.next()) {
+                    info= Conj_Registros.getString("descripcion");
+                }
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
+        }
+        return info;
+    }
+    
     /**
      * @param email
      * @param nombre
@@ -359,6 +384,30 @@ public class ConexionEstatica {
             ps.setString(3, asunto);
             ps.setString(4, cuerpo);
             ps.setDate(5, fecha);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Error de SQL: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Error general: " + ex.getMessage());
+        } finally {
+            try {
+                ps.close();
+                ConexionEstatica.cerrarBD();
+            } catch (Exception ex) {
+                System.out.println("Error general: " + ex.getMessage());
+            }
+        }
+    }
+    
+    
+    public static void agregarAmigo(int id,String email) throws SQLException {
+        ConexionEstatica.nueva();
+        String sql = "INSERT INTO `amigos` (`id_us`, `id_amigo`) VALUES (?, (SELECT id_us FROM user where email=?));";
+        PreparedStatement ps = null;
+        try {
+            ps = ConexionEstatica.Conex.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.setString(2, email);
             ps.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("Error de SQL: " + ex.getMessage());

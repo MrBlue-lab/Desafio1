@@ -18,7 +18,7 @@
                 <a class="dropdown-toggle p-t1" data-toggle="dropdown" href="#">
                     <h4 class=" leta-20"><img src='<%=u.getFotoimgStringCasa()%>' class="rounded-circle z-depth-0" alt='casa'> <%=u.getCasa()%><span class="caret"></span></h4></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#"><h4>Información</h4></a></li>
+                    <li><a href="../vistas_user/info.jsp"><h4>Información</h4></a></li>
                     <li><a href="../vistas_user/casa.jsp"><h4>Alumnos de <%=u.getCasa()%></h4></a></li>
                 </ul>
             </li>
@@ -51,7 +51,7 @@
                     <span class="glyphicon glyphicon-envelope p-5"></span> <%=mensajesRE.size()%>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary w-100px currentColor" aria-labelledby="navbarDropdownMenuLink-56">
-                    <jsp:include page="../Controladores_user/mensajes.jsp" />
+                    <jsp:include page="../modales/mensajes.jsp" />
                 </div>
             </li>
             <li class="nav-item dropdown">

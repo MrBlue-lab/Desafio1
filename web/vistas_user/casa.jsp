@@ -25,30 +25,42 @@
                         LinkedList c = ConexionEstatica.getPosiblesAmigos(u.getId());
                         User aux_amig = null;
                     %>
+                    <h3><%if (u.getFotoBlobCasa() != null) {%>
+                        <img src='<%=u.getFotoimgStringCasa()%>' class="" width="70" alt='Foto de perfil no encontrada'>
+                        <%} else {%>
+                        <img src='../css/img/user1.jpg' class="rounded-circle z-depth-0" alt='Foto de perfil no encontrada'>
+                        <%
+                            }
+                        %>
+                        Alumnos de <%=u.getCasa()%></h3>
                 </div>
-                <div class="card-body m-5">     
+                <div class="card-body m-5 col-sm-12">     
                     <%
                         for (int i = 0; i < c.size(); i++) {
                             aux_amig = (User) c.get(i);
                     %>
-                    <div class="media">
-                        <div class="media-body">
-                            <%if (aux_amig.getFotoBlob() != null) {%>
-                            <img src='<%=aux_amig.getFotoimgString()%>' class="rounded-circle z-depth-0" alt='Foto de perfil no encontrada'>
-                            <%} else {%>
-                            <img src='../css/img/user1.jpg' class="rounded-circle z-depth-0" alt='Foto de perfil no encontrada'>
-                            <%
-                                }
-                            %>
-                            <h4><%=aux_amig.getNick()%> <br><small><i><%= aux_amig.getEmail()%></i></small></h4>
+                    <div class="card-body m-5 col-sm-12">    
+                        <div class="media col-sm-3"></div>
+                        <div class="media col-sm-6">
+                            <form name="for" action="../Controladores_comun/controlador.jsp" method="POST">
+                                <div class="media-left">
+                                    <%if (aux_amig.getFotoBlob() != null) {%>
+                                    <img src='<%=aux_amig.getFotoimgString()%>' class="rounded-circle z-depth-0" alt='Foto de perfil no encontrada'>
+                                    <%} else {%>
+                                    <img src='../css/img/user1.jpg' class="rounded-circle z-depth-0" alt='Foto de perfil no encontrada'>
+                                    <%
+                                        }
+                                    %>
+                                </div>
+                                <div class="media-body">
+                                    <h4><%=aux_amig.getNick()%> <small class="m-5" style="margin-left: 30px;"><i><input type="text" name="email" value="<%= aux_amig.getEmail()%>" readonly=""></i></small><input class="btn btn-info" style="margin-left: 30px;" type="submit" name="agregar" value="Agregar"></h4>
+                                </div>
+                            </form>
                         </div>
-                        <div class="media-right">
-
-                        </div>
+                        <div class="media col-sm-3"><br></div>
                     </div>
                     <%}%>
                 </div>
             </div>
-        </div>
     </body>
 </html>

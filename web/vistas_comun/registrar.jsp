@@ -16,20 +16,19 @@
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">DOOM Crossing</a>
+                    <a class="navbar-brand"><h2>Facewarts</h2></a>
                 </div>
             </div>
         </nav>
-
         <div class="container h-100">
             <div class="col-sm-12 align-self-center text-center">
                 <div class="card-body ">
-                    <form name="for" action="../Controladores_comun/controlador.jsp" method="POST" enctype="multipart/form-data">
+                    <form name="for" action="../Controladores_user/subefichero.jsp" enctype="multipart/form-data" method="post">
                         <fieldset>
                             <legend><h1>Registro</h1></legend>
                             <p>Nick <input type="text" name="nickname" placeholder="nick" value=""></p>
-                            <p>Foto de perfil: <input type="file" name="fichero"/></p>
-                            <p>Email <input type="text" name="email" placeholder="email" value=""></p>
+                            <p>Foto de perfil: <input type="file" name="fichero"/></br> 
+                            <p>Email <input type="email" name="email" placeholder="email" value=""></p>
                             <p>Nombre <input type="text" name="nombre" placeholder="nombre" value="">
                                 <input type="text" name="apellido" placeholder="apellido" value=""></p>
                             <p>Contaseña <input type="password" name="pass" placeholder="email" value=""></p>

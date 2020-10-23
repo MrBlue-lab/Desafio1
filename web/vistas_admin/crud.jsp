@@ -27,7 +27,6 @@
                                 for (int i = 0; i < lista.size(); i++) {
                                     User aux = lista.get(i);
                         %>
-
                         <li class="list-group-item">
                             <form name="for" action="../Controladores_admin/admin.jsp" method="POST">
                                 <input type="text" name="email" value="<%=aux.getEmail()%>" readonly="" class="w-20">
@@ -35,10 +34,20 @@
                                 <input type="text" name="nombre" value="<%=aux.getNombre()%>" class="w-20">
                                 <input type="text" name="apellido" value="<%=aux.getApellidos()%>" class="w-20"> 
                                 <input type="number" name="edad" value="<%=aux.getEdad()%>" class="w-5">  <br>
+                                <% if (aux.getSexo().equals("mujer")) {
+                                %>
                                 <input type="Radio" name="sexo" value="mujer"checked>Mujer
                                 <input type="Radio" name="sexo" value="hombre">Hombre
-                                <input type="number" name="validado" value="<%=aux.getValidado()%>" class="w-5"> 
-                                <input type="number" name="rol" value="<%=aux.getRol()%>" class="w-5"> 
+                                <%
+                                } else {
+                                %>
+                                <input type="Radio" name="sexo" value="mujer">Mujer
+                                <input type="Radio" name="sexo" value="hombre"checked>Hombre
+                                <%
+                                    }
+                                %>
+                                Validado:<input type="number" name="validado" value="<%=aux.getValidado()%>" class="w-5">
+                                Rol:<input type="number" name="rol" value="<%=aux.getRol()%>" class="w-5"> 
                                 <div class="btn-group">
                                     <input type="submit" class="btn btn-primary" name="editar" value="Editar">
                                     <input type="submit" class="btn btn-danger" name="eliminar" value="Borrar">
@@ -55,5 +64,7 @@
                     </form> 
                 </div>
             </div>
+        </div>
+        <jsp:include page="../presentacion/footer.jsp" />
     </body>
 </html>

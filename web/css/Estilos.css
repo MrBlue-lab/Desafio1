@@ -7,7 +7,9 @@ and open the template in the editor.
     Created on : 16 oct. 2020, 20:12:38
     Author     : daw205
 */
-
+.blue{
+    background-color: #222!important;color: #9d9d9d;
+}
 .rounded-circle{
     border-radius: 50%;
     width: 50px;
@@ -110,7 +112,6 @@ h4{
 .tablero-mensajes{
     display: block;
     max-height: 400px;
-    height: 400px;
     overflow: auto;
 }
 .mini_foto{
@@ -123,4 +124,11 @@ td{
 tr{
     max-height: 57px;
     display: block;
+}
+footer{
+    margin-top: 100px !important;
+    position:fixed;
+    left:0px;
+    bottom:0px;
+    width: 100%;
 }
